@@ -41,7 +41,9 @@ class AudioGenerator {
   loadBackgroundMusic() {
     try {
       // Try to load MP3 first, fallback to OGG
-      const musicPath = '/music/background-music.mp3';
+      // Use BASE_URL for GitHub Pages compatibility
+      const baseUrl = import.meta.env.BASE_URL || '/';
+      const musicPath = `${baseUrl}music/background-music.mp3`;
       this.backgroundMusic = new Audio(musicPath);
       this.backgroundMusic.loop = true;
       this.backgroundMusic.preload = 'auto';
@@ -58,7 +60,8 @@ class AudioGenerator {
         console.error('Failed to load MP3:', this.backgroundMusic.error);
         console.warn('Trying OGG fallback');
         try {
-          const oggPath = '/music/background-music.ogg';
+          const baseUrl = import.meta.env.BASE_URL || '/';
+          const oggPath = `${baseUrl}music/background-music.ogg`;
           this.backgroundMusic = new Audio(oggPath);
           this.backgroundMusic.loop = true;
           this.backgroundMusic.preload = 'auto';

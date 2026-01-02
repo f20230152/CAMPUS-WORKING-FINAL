@@ -98,7 +98,7 @@ function Outro({ campusData, onReplay }) {
 
       {/* Swiggy Logo - Bottom Center - Same as intro screen */}
       <img 
-        src="/assets/logos/swiggy-logo.png" 
+        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
         alt="Swiggy" 
         className={styles.logo}
       />

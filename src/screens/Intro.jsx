@@ -147,14 +147,14 @@ function Intro({ campusData }) {
       </div>
       <div ref={vector4Ref} className={`${styles.vectorBottomRight} ${styles.emojiVector}`}>
         <img 
-          src="/assets/vectors/food_04.svg" 
+          src={`${import.meta.env.BASE_URL}assets/vectors/food_04.svg`}
           alt="" 
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         />
       </div>
       <div ref={vector5Ref} className={`${styles.vectorCenterEdge} ${styles.emojiVector}`}>
         <img 
-          src="/assets/vectors/food_05.svg" 
+          src={`${import.meta.env.BASE_URL}assets/vectors/food_05.svg`}
           alt="" 
           style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         />
@@ -179,7 +179,7 @@ function Intro({ campusData }) {
       {/* Swiggy Logo - Bottom Center */}
       <img 
         ref={logoRef}
-        src="/assets/logos/swiggy-logo.png" 
+        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
         alt="Swiggy" 
         className={styles.logo}
       />

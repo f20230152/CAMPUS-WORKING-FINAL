@@ -1121,7 +1121,7 @@ function StatScreen({ data }) {
       {/* Swiggy Logo - Bottom Center - Same as intro screen */}
       <img 
         ref={logoRef}
-        src="/assets/logos/swiggy-logo.png" 
+        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
         alt="Swiggy" 
         className={styles.logo}
       />
