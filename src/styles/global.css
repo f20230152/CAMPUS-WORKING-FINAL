@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #FEF0E3;
+  color: #2C1810;
+  /* Prevent text size adjustment on iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Mobile portrait optimization */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Ensure proper sizing in webview */
+#root {
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* Optimize for portrait orientation */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+  /* Show message or adjust layout for landscape if needed */
+  body::before {
+    content: 'Please rotate your device to portrait mode for the best experience';
+    display: none; /* Hidden by default, can be shown if needed */
+  }
+}
+
+/* Webview optimizations */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific */
+  html, body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+/* Prevent pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: none;
+  overscroll-behavior-x: none;
+}
+

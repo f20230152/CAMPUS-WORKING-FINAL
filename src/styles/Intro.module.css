@@ -1,0 +1,223 @@
+.intro {
+  width: 100vw;
+  height: 100vh;
+  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #FEF0E3 0%, #FFE5D4 50%, #FFD4C4 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background pattern */
+.intro::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: drift 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* Hero Content - Center Aligned */
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  margin-top: -10vh; /* Move content up */
+}
+
+/* "Swiggy Presents" - Top, larger for mobile */
+.presents {
+  font-size: clamp(16px, 4vw, 24px);
+  font-weight: 600;
+  opacity: 0;
+  color: #F25700;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  transform: translateY(-10px);
+}
+
+/* Main Title - Primary headline, bold - Increased size */
+.title {
+  font-size: clamp(40px, 10vw, 80px);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 4px 20px rgba(242, 87, 0, 0.2);
+  line-height: 1.2;
+  color: #F25700;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+.wrappedYear {
+  display: block;
+  font-size: clamp(28px, 7vw, 56px);
+  font-weight: 700;
+  opacity: 0.95;
+  margin-top: 8px;
+}
+
+/* CTA Text - More visible with darker color and background */
+.cta {
+  font-size: clamp(16px, 3.5vw, 20px);
+  font-weight: 500;
+  opacity: 0;
+  color: #D04500; /* Darker orange for better visibility */
+  letter-spacing: 1px;
+  margin-top: 32px;
+  transform: translateY(10px);
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.3); /* Light background for contrast */
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  text-shadow: 0 2px 8px rgba(242, 87, 0, 0.3);
+}
+
+/* Swiggy Logo - Bottom Center - 2x bigger */
+.logo {
+  position: absolute;
+  bottom: 60px; /* Moved up from 24px */
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(120px, 20vw, 180px); /* 2x bigger */
+  height: auto;
+  opacity: 0;
+  z-index: 2;
+  object-fit: contain;
+  margin: 0 auto; /* Additional centering */
+}
+
+/* Food Vector/Emoji Illustrations - Fixed Zones with rounded corners */
+.emojiVector {
+  font-size: clamp(60px, 15vw, 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.vectorTopLeft {
+  position: absolute;
+  top: -20px;
+  left: -30px;
+  width: clamp(80px, 20vw, 120px);
+  height: clamp(80px, 20vw, 120px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 25%; /* Rounded corners */
+}
+
+.vectorTopRight {
+  position: absolute;
+  top: -15px;
+  right: -25px;
+  width: clamp(80px, 20vw, 120px);
+  height: clamp(80px, 20vw, 120px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 25%; /* Rounded corners */
+}
+
+.vectorBottomLeft {
+  position: absolute;
+  bottom: 20px;
+  left: -20px;
+  width: clamp(80px, 20vw, 120px);
+  height: clamp(80px, 20vw, 120px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 25%; /* Rounded corners */
+}
+
+.vectorBottomRight {
+  position: absolute;
+  bottom: 30px;
+  right: -25px;
+  width: clamp(80px, 20vw, 120px);
+  height: clamp(80px, 20vw, 120px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 25%; /* Rounded corners */
+}
+
+.vectorCenterEdge {
+  position: absolute;
+  top: 50%;
+  right: 5%;
+  transform: translateY(-50%);
+  width: clamp(60px, 15vw, 90px);
+  height: clamp(60px, 15vw, 90px);
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 25%; /* Rounded corners */
+}
+
+/* Mobile portrait optimizations */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .intro {
+    padding: 20px 16px;
+  }
+  
+  .heroContent {
+    margin-top: -8vh; /* Less negative margin on mobile */
+  }
+  
+  .presents {
+    font-size: clamp(18px, 5vw, 22px);
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    padding: 0 16px;
+    font-size: clamp(36px, 9vw, 48px);
+  }
+  
+  .wrappedYear {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+  
+  .cta {
+    font-size: clamp(14px, 4vw, 18px);
+    padding: 10px 20px;
+    margin-top: 28px;
+  }
+  
+  .logo {
+    bottom: 50px; /* Moved up from 16px on mobile */
+    width: clamp(100px, 18vw, 150px); /* 2x bigger on mobile */
+  }
+  
+  .vectorTopLeft,
+  .vectorTopRight,
+  .vectorBottomLeft,
+  .vectorBottomRight {
+    width: 60px;
+  }
+  
+  .vectorCenterEdge {
+    width: 50px;
+  }
+}

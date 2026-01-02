@@ -1,0 +1,60 @@
+.app {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.skipButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  right: calc(20px + env(safe-area-inset-right));
+  z-index: 1000;
+  background: rgba(242, 87, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(242, 87, 0, 0.4);
+  color: #F25700;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  /* Touch-friendly minimum size */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.skipButton:hover,
+.skipButton:active {
+  background: rgba(242, 87, 0, 0.25);
+  transform: scale(0.98);
+  border-color: rgba(242, 87, 0, 0.6);
+}
+
+/* Mobile portrait optimizations */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .skipButton {
+    bottom: 16px;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    right: calc(16px + env(safe-area-inset-right));
+    padding: 10px 20px;
+    font-size: 13px;
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+

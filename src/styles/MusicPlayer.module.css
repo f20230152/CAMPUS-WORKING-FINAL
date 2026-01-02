@@ -1,0 +1,57 @@
+.musicControls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  right: calc(20px + env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.muteButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 184, 140, 0.85);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: 0 4px 12px rgba(255, 184, 140, 0.4);
+}
+
+.muteButton:hover {
+  background: rgba(255, 184, 140, 0.95);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 184, 140, 0.5);
+}
+
+.muteButton:active {
+  transform: scale(0.95);
+}
+
+/* Mobile portrait optimizations */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  .musicControls {
+    bottom: 16px;
+    right: 16px;
+    right: calc(16px + env(safe-area-inset-right));
+    bottom: calc(16px + env(safe-area-inset-bottom));
+  }
+
+  .muteButton {
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+  }
+}
+
