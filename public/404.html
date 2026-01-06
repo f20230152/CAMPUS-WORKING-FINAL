@@ -5,31 +5,31 @@
     <title>Campus Wrapped</title>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
-      // https://github.com/rafgraph/spa-github-pages
+      // Redirect 404s to index.html with hash routing
       var pathSegmentsToKeep = 1;
       var l = window.location;
-      
-      // Get the path after the base path
       var path = l.pathname;
-      var basePath = path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
-      var pathAfterBase = path.slice(basePath.length);
       
-      // If there's a query redirect, extract it
+      // Extract base path (e.g., /CAMPUS-WORKING-FINAL/)
+      var basePath = path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+      if (!basePath.endsWith('/')) {
+        basePath += '/';
+      }
+      
+      // Get the path after base (the POI ID or other path)
+      var pathAfterBase = path.slice(basePath.length - 1); // Keep the leading /
+      
+      // If there's a query redirect from previous 404, extract it
       if (l.search && l.search.startsWith('?/')) {
-        pathAfterBase = l.search.slice(2); // Remove '?/'
+        pathAfterBase = l.search.slice(1); // Keep the '?'
       }
       
       // Clean up the path
       pathAfterBase = pathAfterBase.replace(/&/g, '~and~');
       
-      // Redirect to proper path (not query string)
-      if (pathAfterBase && pathAfterBase !== '/') {
-        var newPath = basePath + pathAfterBase;
-        l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + newPath + l.hash);
-      } else {
-        // Just go to base path
-        l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + basePath + '/');
-      }
+      // Redirect to index.html with the path as hash
+      var redirectUrl = basePath + 'index.html' + (pathAfterBase && pathAfterBase !== '/' ? '#' + pathAfterBase : '');
+      l.replace(redirectUrl);
     </script>
   </head>
   <body>

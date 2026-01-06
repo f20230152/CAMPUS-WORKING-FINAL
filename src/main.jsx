@@ -1,22 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import './styles/global.css';
 
-// Get base path for GitHub Pages
-const basePath = import.meta.env.BASE_URL || '/';
-
+// Use HashRouter for GitHub Pages to avoid 404 issues
+// URLs will be: /CAMPUS-WORKING-FINAL/#/poi_id or /CAMPUS-WORKING-FINAL/#/
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename={basePath}>
+    <HashRouter>
       <Routes>
         {/* POI-specific path - must come first to match before root */}
         <Route path="/:poiId" element={<App />} />
         {/* Root path - uses default data */}
         <Route path="/" element={<App />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
 

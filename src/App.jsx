@@ -24,86 +24,57 @@ function App() {
   const lastTapTimeRef = useRef(0);
   const lastTapScreenRef = useRef(0);
 
-  // Extract POI ID from URL - handle both pathname and query string (for 404 redirects)
-  const getPoiIdFromUrl = () => {
-    // First try from React Router params
-    if (paramPoiId) {
-      return paramPoiId;
-    }
-    
-    // If not in params, check pathname directly
-    const pathname = window.location.pathname;
-    const basePath = import.meta.env.BASE_URL || '/';
-    let cleanPath = pathname;
-    
-    // Remove base path
-    if (basePath !== '/') {
-      cleanPath = pathname.replace(basePath, '/');
-    }
-    
-    // Extract from pathname
-    const segments = cleanPath.split('/').filter(s => s && s !== 'CAMPUS-WORKING-FINAL' && s !== 'index.html');
-    if (segments.length > 0) {
-      const lastSegment = segments[segments.length - 1];
-      if (lastSegment && lastSegment !== '') {
-        return lastSegment;
-      }
-    }
-    
-    // If not in pathname, check query string (for 404 redirects)
-    const search = window.location.search;
-    if (search && search.startsWith('?/')) {
-      const queryPath = search.slice(2).split('&')[0]; // Get path from query, ignore other params
-      const querySegments = queryPath.split('/').filter(s => s);
-      if (querySegments.length > 0) {
-        return querySegments[querySegments.length - 1];
-      }
-    }
-    
-    return null;
-  };
-
-  const poiId = getPoiIdFromUrl();
+  // Get POI ID from React Router params (HashRouter)
+  const poiId = paramPoiId || null;
 
   // Debug: Log POI ID on mount and changes
   useEffect(() => {
     console.log('=== App Component ===');
     console.log('POI ID from useParams:', paramPoiId);
-    console.log('POI ID extracted:', poiId);
+    console.log('POI ID:', poiId);
     console.log('Full URL:', window.location.href);
-    console.log('Pathname:', window.location.pathname);
-    console.log('Search:', window.location.search);
-    console.log('Base URL:', import.meta.env.BASE_URL);
+    console.log('Hash:', window.location.hash);
   }, [poiId, paramPoiId]);
 
   // Load POI data when component mounts or POI ID changes
   useEffect(() => {
+    let isMounted = true; // Prevent state updates if component unmounts
+    
     const loadData = async () => {
       setIsLoading(true);
       console.log('Loading data for POI ID:', poiId);
-      console.log('Current URL:', window.location.href);
-      console.log('Current pathname:', window.location.pathname);
       
       try {
+        let data;
         if (poiId && poiId.trim() !== '') {
           console.log('Fetching POI data for:', poiId.trim());
-          const data = await loadPoiData(poiId.trim());
+          data = await loadPoiData(poiId.trim());
           console.log('Successfully loaded data for:', data.college_name);
-          setCampusData(data);
         } else {
           console.log('No POI ID provided, using default data');
-          // Use default data if no POI ID
-          setCampusData(defaultCampusData);
+          data = defaultCampusData;
+        }
+        
+        // Only update state if component is still mounted
+        if (isMounted) {
+          setCampusData(data);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Error loading campus data:', error);
-        setCampusData(defaultCampusData);
-      } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setCampusData(defaultCampusData);
+          setIsLoading(false);
+        }
       }
     };
 
     loadData();
+    
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
   }, [poiId]);
 
   const screens = useMemo(() => {
