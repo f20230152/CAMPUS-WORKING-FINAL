@@ -11,7 +11,7 @@
   background: linear-gradient(135deg, #FFE5D4 0%, #FFD4C4 30%, #FFB88C 70%, #FFA07A 100%);
   position: relative;
   overflow-y: auto;
-  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(200px, env(safe-area-inset-bottom) + 200px) max(20px, env(safe-area-inset-left)); /* Increased bottom padding to prevent logo overlap */
 }
 
 .outro::before {
