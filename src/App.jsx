@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import campusData from './data/campus.json';
+import { useParams } from 'react-router-dom';
+import defaultCampusData from './data/campus.json';
 import Intro from './screens/Intro';
 import StatScreen from './screens/StatScreen';
 import Outro from './screens/Outro';
 import MusicPlayer from './components/MusicPlayer';
 import { getAudioGenerator } from './utils/audioGenerator';
+import { loadPoiData } from './utils/loadPoiData';
 import styles from './styles/App.module.css';
 
 const SCREEN_DURATIONS = {
@@ -14,12 +16,41 @@ const SCREEN_DURATIONS = {
 };
 
 function App() {
+  const { poiId } = useParams(); // Get POI ID from URL
+  const [campusData, setCampusData] = useState(defaultCampusData);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentScreen, setCurrentScreen] = useState(0);
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
   const lastTapTimeRef = useRef(0);
   const lastTapScreenRef = useRef(0);
 
-  const screens = useMemo(() => [
+  // Load POI data when component mounts or POI ID changes
+  useEffect(() => {
+    const loadData = async () => {
+      setIsLoading(true);
+      try {
+        if (poiId) {
+          const data = await loadPoiData(poiId);
+          setCampusData(data);
+        } else {
+          // Use default data if no POI ID
+          setCampusData(defaultCampusData);
+        }
+      } catch (error) {
+        console.error('Error loading campus data:', error);
+        setCampusData(defaultCampusData);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadData();
+  }, [poiId]);
+
+  const screens = useMemo(() => {
+    if (isLoading) return []; // Return empty while loading
+    
+    return [
     { type: 'intro', component: Intro },
     { type: 'stat', component: StatScreen, data: { 
       title: 'Your campus runs on', 
@@ -65,7 +96,8 @@ function App() {
       statType: 'biryanis' 
     }},
     { type: 'outro', component: Outro }
-  ], []);
+    ];
+  }, [campusData, isLoading]);
 
   // No auto-advance - all navigation is manual via tap zones
 
@@ -151,6 +183,27 @@ function App() {
   const CurrentScreen = screens[currentScreen]?.component;
   const screenData = screens[currentScreen]?.data || {};
 
+  // Show loading state while data is being fetched
+  if (isLoading) {
+    return (
+      <div className={styles.app} style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #FEF0E3 0%, #FFE5D4 50%, #FFD4C4 100%)'
+      }}>
+        <div style={{ 
+          color: '#fe5200', 
+          fontSize: '24px', 
+          fontWeight: 'bold',
+          textAlign: 'center'
+        }}>
+          Loading Campus Wrapped...
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.app} onClick={handleScreenTouch} onTouchEnd={handleScreenTouch} onTouchStart={(e) => {
       // Only preventDefault if not passive
@@ -160,7 +213,7 @@ function App() {
     }}>
       {CurrentScreen && (
         <CurrentScreen 
-          key={`screen-${currentScreen}`}
+          key={`screen-${currentScreen}-${poiId || 'default'}`}
           data={screenData}
           campusData={campusData}
           onReplay={handleReplay}
