@@ -22,13 +22,25 @@ export async function loadPoiData(poiId) {
       console.log('POI cache loaded, total POIs:', Object.keys(poiCache).length);
     }
 
-    // Get specific POI data
-    const poiData = poiCache[poiId];
+    // Get specific POI data - try exact match first
+    let poiData = poiCache[poiId];
     console.log('Looking for POI:', poiId);
-    console.log('POI found:', !!poiData);
+    console.log('POI found (exact match):', !!poiData);
+    
+    // If not found, try case-insensitive search
+    if (!poiData) {
+      const lowerPoiId = poiId.toLowerCase();
+      const matchingKey = Object.keys(poiCache).find(key => key.toLowerCase() === lowerPoiId);
+      if (matchingKey) {
+        poiData = poiCache[matchingKey];
+        console.log('POI found (case-insensitive):', matchingKey);
+      }
+    }
     
     if (!poiData) {
-      console.warn(`POI ${poiId} not found in cache. Available POIs:`, Object.keys(poiCache).slice(0, 5));
+      console.warn(`POI ${poiId} not found in cache.`);
+      console.warn('Available POI IDs (first 10):', Object.keys(poiCache).slice(0, 10));
+      console.warn('Total POIs in cache:', Object.keys(poiCache).length);
       // Return default data if POI not found
       return await getDefaultData();
     }
