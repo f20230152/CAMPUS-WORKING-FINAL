@@ -42,13 +42,13 @@ function App() {
       console.log('Current pathname:', window.location.pathname);
       
       try {
-        if (poiId) {
-          console.log('Fetching POI data for:', poiId);
-          const data = await loadPoiData(poiId);
-          console.log('Loaded POI data:', data);
+        if (poiId && poiId.trim() !== '') {
+          console.log('Fetching POI data for:', poiId.trim());
+          const data = await loadPoiData(poiId.trim());
+          console.log('Successfully loaded data for:', data.college_name);
           setCampusData(data);
         } else {
-          console.log('No POI ID, using default data');
+          console.log('No POI ID provided, using default data');
           // Use default data if no POI ID
           setCampusData(defaultCampusData);
         }
