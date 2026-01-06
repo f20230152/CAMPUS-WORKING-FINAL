@@ -11,10 +11,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter basename={basePath}>
       <Routes>
+        {/* POI-specific path - must come first to match before root */}
+        <Route path="/:poiId" element={<App />} />
         {/* Root path - uses default data */}
         <Route path="/" element={<App />} />
-        {/* POI-specific path - loads data based on POI ID */}
-        <Route path="/:poiId" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

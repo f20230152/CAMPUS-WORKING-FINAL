@@ -5,25 +5,35 @@ let poiCache = null;
 
 export async function loadPoiData(poiId) {
   try {
+    console.log('loadPoiData called with POI ID:', poiId);
+    
     // Load all POI data once and cache it
     if (!poiCache) {
       const baseUrl = import.meta.env.BASE_URL || '/';
-      const response = await fetch(`${baseUrl}data/pois.json`);
+      const jsonUrl = `${baseUrl}data/pois.json`;
+      console.log('Fetching POI data from:', jsonUrl);
+      
+      const response = await fetch(jsonUrl);
       if (!response.ok) {
-        throw new Error('Failed to load POI data');
+        console.error('Failed to load POI data, status:', response.status);
+        throw new Error(`Failed to load POI data: ${response.status}`);
       }
       poiCache = await response.json();
+      console.log('POI cache loaded, total POIs:', Object.keys(poiCache).length);
     }
 
     // Get specific POI data
     const poiData = poiCache[poiId];
+    console.log('Looking for POI:', poiId);
+    console.log('POI found:', !!poiData);
     
     if (!poiData) {
-      console.warn(`POI ${poiId} not found, using default`);
+      console.warn(`POI ${poiId} not found in cache. Available POIs:`, Object.keys(poiCache).slice(0, 5));
       // Return default data if POI not found
       return await getDefaultData();
     }
 
+    console.log('Returning POI data for:', poiData.college_name);
     return poiData;
   } catch (error) {
     console.error('Error loading POI data:', error);

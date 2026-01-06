@@ -24,15 +24,31 @@ function App() {
   const lastTapTimeRef = useRef(0);
   const lastTapScreenRef = useRef(0);
 
+  // Debug: Log POI ID on mount and changes
+  useEffect(() => {
+    console.log('=== App Component ===');
+    console.log('POI ID from useParams:', poiId);
+    console.log('Full URL:', window.location.href);
+    console.log('Pathname:', window.location.pathname);
+    console.log('Base URL:', import.meta.env.BASE_URL);
+  }, [poiId]);
+
   // Load POI data when component mounts or POI ID changes
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
+      console.log('Loading data for POI ID:', poiId);
+      console.log('Current URL:', window.location.href);
+      console.log('Current pathname:', window.location.pathname);
+      
       try {
         if (poiId) {
+          console.log('Fetching POI data for:', poiId);
           const data = await loadPoiData(poiId);
+          console.log('Loaded POI data:', data);
           setCampusData(data);
         } else {
+          console.log('No POI ID, using default data');
           // Use default data if no POI ID
           setCampusData(defaultCampusData);
         }
