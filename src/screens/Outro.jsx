@@ -80,13 +80,13 @@ function Outro({ campusData, onReplay }) {
           {/* Tile 6 */}
           <div className={styles.metricTile}>
             <div className={styles.tileLabel}>MAX PIZZAS IN A DAY</div>
-            <div className={styles.tileValue}>{campusData.stats.max_pizzas_single_day} pizzas 🍕</div>
+            <div className={styles.tileValue}>{campusData.stats.max_pizzas_single_day} 🍕</div>
           </div>
 
           {/* Tile 7 */}
           <div className={styles.metricTile}>
             <div className={styles.tileLabel}>MAX BIRYANI-S IN A DAY</div>
-            <div className={styles.tileValue}>{campusData.stats.max_biryanis_single_day} plates 🍗🍚</div>
+            <div className={styles.tileValue}>{campusData.stats.max_biryanis_single_day} 🍗🍚</div>
           </div>
         </div>
 

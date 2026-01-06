@@ -581,8 +581,8 @@ function StatScreen({ data }) {
   };
 
   const createBiryaniConfetti = () => {
-    // Create 100 small food emojis raining across the screen - all kinds of dishes
-    const emojis = ['🍛', '🍚', '🍕', '🍔', '🌮', '🌯', '🥙', '🥗', '🍜', '🍝', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖', '🥘', '🍳', '🥟', '🍢', '🍡', '🥠', '🍩', '🍪', '🥧', '🍰', '🧁', '🍫', '🍬', '🍭', '🌭', '🥪', '🌯', '🥗', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖']; // All kinds of food emojis
+    // Create 100 small biryani emojis raining across the screen for favourite_dish screen
+    const emojis = ['🍛', '🍚']; // Biryani and rice emojis for favourite dish screen
     if (!containerRef.current) {
       // Retry after a short delay if container isn't ready
       setTimeout(() => createBiryaniConfetti(), 100);
@@ -834,16 +834,15 @@ function StatScreen({ data }) {
   };
 
   const createBiryaniRain = () => {
-    // Create multiple dish emojis raining and popping from all sides of the screen
-    // Using various food emojis to represent the 120 unique dishes
-    const dishEmojis = ['🍛', '🍚', '🍕', '🍔', '🌮', '🌯', '🥙', '🥗', '🍜', '🍝', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖', '🥘', '🍳', '🥟', '🍢', '🍡', '🥠', '🍩', '🍪', '🥧', '🍰', '🧁', '🍫', '🍬', '🍭']; // Multiple dish icons
-    const biryaniCount = 50; // Total dishes from all sides
+    // Create biryani emojis raining and popping from all sides of the screen
+    const biryaniEmojis = ['🍛', '🍚']; // Biryani and rice emojis for biryani screen
+    const biryaniCount = 50; // Total biryanis from all sides
     
     // Biryani from top (raining down)
     for (let i = 0; i < Math.floor(biryaniCount / 4); i++) {
       setTimeout(() => {
         const biryani = document.createElement('div');
-        biryani.textContent = dishEmojis[Math.floor(Math.random() * dishEmojis.length)];
+        biryani.textContent = biryaniEmojis[Math.floor(Math.random() * biryaniEmojis.length)];
         biryani.style.position = 'fixed';
         biryani.style.fontSize = '30px';
         biryani.style.left = Math.random() * 100 + '%';
@@ -877,7 +876,7 @@ function StatScreen({ data }) {
     for (let i = 0; i < Math.floor(biryaniCount / 4); i++) {
       setTimeout(() => {
         const biryani = document.createElement('div');
-        biryani.textContent = dishEmojis[Math.floor(Math.random() * dishEmojis.length)];
+        biryani.textContent = biryaniEmojis[Math.floor(Math.random() * biryaniEmojis.length)];
         biryani.style.position = 'fixed';
         biryani.style.fontSize = '30px';
         biryani.style.left = Math.random() * 100 + '%';
@@ -911,7 +910,7 @@ function StatScreen({ data }) {
     for (let i = 0; i < Math.floor(biryaniCount / 4); i++) {
       setTimeout(() => {
         const biryani = document.createElement('div');
-        biryani.textContent = dishEmojis[Math.floor(Math.random() * dishEmojis.length)];
+        biryani.textContent = biryaniEmojis[Math.floor(Math.random() * biryaniEmojis.length)];
         biryani.style.position = 'fixed';
         biryani.style.fontSize = '30px';
         biryani.style.left = '-50px';
@@ -945,7 +944,7 @@ function StatScreen({ data }) {
     for (let i = 0; i < Math.floor(biryaniCount / 4); i++) {
       setTimeout(() => {
         const biryani = document.createElement('div');
-        biryani.textContent = dishEmojis[Math.floor(Math.random() * dishEmojis.length)];
+        biryani.textContent = biryaniEmojis[Math.floor(Math.random() * biryaniEmojis.length)];
         biryani.style.position = 'fixed';
         biryani.style.fontSize = '30px';
         biryani.style.right = '-50px';

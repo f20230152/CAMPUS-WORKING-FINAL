@@ -84,6 +84,10 @@
     width: 30px;
     height: 30px;
   }
+
+  .logo {
+    bottom: 120px; /* Extra space on mobile to prevent overlap */
+  }
 }
 
 .statScreen::after {
@@ -228,7 +232,7 @@
 /* Swiggy Logo - Bottom Center - Same as intro screen */
 .logo {
   position: absolute;
-  bottom: 60px;
+  bottom: 100px; /* Increased from 60px to prevent overlap */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(120px, 20vw, 180px);
@@ -237,6 +241,7 @@
   z-index: 2;
   object-fit: contain;
   margin: 0 auto;
+  pointer-events: none; /* Prevent interaction issues */
 }
 
 .dishIcon {
