@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Campus Wrapped</title>
     <script type="text/javascript">
-      // Single Page Apps for GitHub Pages
-      // Redirect 404s to index.html with hash routing
+      // Single Page Apps for GitHub Pages with HashRouter
+      // Redirect 404s to index.html with hash-based routing
       var pathSegmentsToKeep = 1;
       var l = window.location;
       var path = l.pathname;
@@ -16,19 +16,22 @@
         basePath += '/';
       }
       
-      // Get the path after base (the POI ID or other path)
-      var pathAfterBase = path.slice(basePath.length - 1); // Keep the leading /
+      // Get the path after base (the POI ID)
+      var pathAfterBase = path.slice(basePath.length);
       
       // If there's a query redirect from previous 404, extract it
       if (l.search && l.search.startsWith('?/')) {
-        pathAfterBase = l.search.slice(1); // Keep the '?'
+        pathAfterBase = l.search.slice(2); // Remove '?/'
       }
       
-      // Clean up the path
+      // Clean up the path - remove leading/trailing slashes
+      pathAfterBase = pathAfterBase.replace(/^\/+|\/+$/g, '');
       pathAfterBase = pathAfterBase.replace(/&/g, '~and~');
       
-      // Redirect to index.html with the path as hash
-      var redirectUrl = basePath + 'index.html' + (pathAfterBase && pathAfterBase !== '/' ? '#' + pathAfterBase : '');
+      // Redirect to index.html with hash routing
+      // Format: /CAMPUS-WORKING-FINAL/index.html#/poi_id
+      var hash = pathAfterBase ? '#/' + pathAfterBase : '#/';
+      var redirectUrl = basePath + 'index.html' + hash;
       l.replace(redirectUrl);
     </script>
   </head>
