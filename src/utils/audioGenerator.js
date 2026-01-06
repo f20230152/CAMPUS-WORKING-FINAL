@@ -40,10 +40,10 @@ class AudioGenerator {
   // Load background music file
   loadBackgroundMusic() {
     try {
-      // Try to load MP3 first, fallback to OGG
+      // Try to load MPEG first, fallback to OGG
       // Use BASE_URL for GitHub Pages compatibility
       const baseUrl = import.meta.env.BASE_URL || '/';
-      const musicPath = `${baseUrl}music/background-music.mp3`;
+      const musicPath = `${baseUrl}music/background-music.mpeg`;
       this.backgroundMusic = new Audio(musicPath);
       this.backgroundMusic.loop = true;
       this.backgroundMusic.preload = 'auto';
@@ -57,7 +57,7 @@ class AudioGenerator {
 
       // Handle audio element errors
       this.backgroundMusic.addEventListener('error', (e) => {
-        console.error('Failed to load MP3:', this.backgroundMusic.error);
+        console.error('Failed to load MPEG:', this.backgroundMusic.error);
         console.warn('Trying OGG fallback');
         try {
           const baseUrl = import.meta.env.BASE_URL || '/';
