@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(180px, env(safe-area-inset-bottom) + 180px) max(20px, env(safe-area-inset-left)); /* Increased bottom padding to prevent logo overlap */
   position: relative;
   overflow: hidden;
 }
@@ -86,7 +86,7 @@
   }
 
   .logo {
-    bottom: 120px; /* Extra space on mobile to prevent overlap */
+    bottom: max(100px, env(safe-area-inset-bottom, 100px) + 100px); /* Extra space on mobile to prevent overlap */
   }
 }
 
@@ -231,16 +231,16 @@
 
 /* Swiggy Logo - Bottom Center - Same as intro screen */
 .logo {
-  position: absolute;
-  bottom: 100px; /* Increased from 60px to prevent overlap */
+  position: fixed; /* Changed from absolute to fixed for better positioning */
+  bottom: max(80px, env(safe-area-inset-bottom, 80px) + 80px); /* Responsive bottom spacing with safe area */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(120px, 20vw, 180px);
   height: auto;
   opacity: 0;
-  z-index: 2;
+  z-index: 100; /* Higher z-index to ensure it's above other elements */
   object-fit: contain;
-  margin: 0 auto;
+  margin: 0;
   pointer-events: none; /* Prevent interaction issues */
 }
 
