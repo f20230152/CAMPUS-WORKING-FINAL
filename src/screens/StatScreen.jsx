@@ -581,8 +581,8 @@ function StatScreen({ data }) {
   };
 
   const createBiryaniConfetti = () => {
-    // Create 100 small biryani emojis raining across the screen for favourite_dish screen
-    const emojis = ['🍛', '🍚']; // Biryani and rice emojis for favourite dish screen
+    // Create 100 small food emojis raining across the screen for favourite_dish screen - all kinds of dishes
+    const emojis = ['🍛', '🍚', '🍕', '🍔', '🌮', '🌯', '🥙', '🥗', '🍜', '🍝', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖', '🥘', '🍳', '🥟', '🍢', '🍡', '🥠', '🍩', '🍪', '🥧', '🍰', '🧁', '🍫', '🍬', '🍭', '🌭', '🥪', '🍟', '🌽', '🥐', '🥖', '🥨', '🧀', '🥚', '🥓', '🥞', '🧇', '🥯', '🥖', '🥨']; // All kinds of food emojis for favourite dish screen
     if (!containerRef.current) {
       // Retry after a short delay if container isn't ready
       setTimeout(() => createBiryaniConfetti(), 100);
