@@ -229,9 +229,8 @@
 /* Mobile Optimizations */
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .outro {
-    padding: 24px 16px;
+    padding: max(60px, env(safe-area-inset-top) + 60px) 16px 24px 16px; /* Top padding for logo on mobile */
     justify-content: center;
-    padding-top: 40px;
   }
 
   .card {
