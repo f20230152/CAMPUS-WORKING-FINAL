@@ -32,6 +32,13 @@ function Outro({ campusData, onReplay }) {
 
   return (
     <div className={styles.outro}>
+      {/* Swiggy Logo - Top Center - Same as intro screen */}
+      <img 
+        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
+        alt="Swiggy" 
+        className={styles.logo}
+      />
+
       <div className={styles.card}>
         {/* Header */}
         <div className={styles.header}>
@@ -95,13 +102,6 @@ function Outro({ campusData, onReplay }) {
           Swiggy • Campus Wrapped 2025
         </div>
       </div>
-
-      {/* Swiggy Logo - Bottom Center - Same as intro screen */}
-      <img 
-        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
-        alt="Swiggy" 
-        className={styles.logo}
-      />
 
       {/* Share CTA Button - Outside Card */}
       <button 

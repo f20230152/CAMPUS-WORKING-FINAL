@@ -11,7 +11,7 @@
   background: linear-gradient(135deg, #FFE5D4 0%, #FFD4C4 30%, #FFB88C 70%, #FFA07A 100%);
   position: relative;
   overflow-y: auto;
-  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(200px, env(safe-area-inset-bottom) + 200px) max(20px, env(safe-area-inset-left)); /* Increased bottom padding to prevent logo overlap */
+  padding: max(120px, env(safe-area-inset-top) + 120px) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); /* Increased top padding for logo */
 }
 
 .outro::before {
@@ -211,18 +211,18 @@
   margin-left: 4px;
 }
 
-/* Swiggy Logo - Bottom Center - Same as intro screen */
+/* Swiggy Logo - Top Center - Same as intro screen */
 .logo {
-  position: fixed; /* Changed from absolute to fixed for better positioning */
-  bottom: max(140px, env(safe-area-inset-bottom, 140px) + 140px); /* Responsive bottom spacing with safe area, above share button */
+  position: absolute;
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(120px, 20vw, 180px);
+  width: clamp(140px, 22vw, 200px);
   height: auto;
   opacity: 1;
   z-index: 100; /* Higher z-index to ensure it's above other elements */
   object-fit: contain;
-  margin: 0;
+  margin: 0 auto;
   pointer-events: none; /* Prevent interaction issues */
 }
 
@@ -274,7 +274,8 @@
   }
 
   .logo {
-    bottom: max(160px, env(safe-area-inset-bottom, 160px) + 160px); /* Extra space on mobile to prevent overlap with share button */
+    top: 24px; /* Closer to top on mobile */
+    width: clamp(120px, 20vw, 160px);
   }
 }
 
