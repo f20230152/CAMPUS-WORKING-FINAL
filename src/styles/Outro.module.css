@@ -211,10 +211,10 @@
   margin-left: 4px;
 }
 
-/* Swiggy Logo - Top Center - Same as intro screen */
+/* Swiggy Logo - Top Center - Moved down to reduce gap with card */
 .logo {
   position: fixed; /* Fixed to viewport for consistent positioning */
-  top: max(20px, env(safe-area-inset-top, 20px) + 20px); /* Responsive top spacing with safe area */
+  top: max(60px, env(safe-area-inset-top, 60px) + 60px); /* Moved down to reduce gap with card */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(140px, 22vw, 200px);
@@ -273,7 +273,7 @@
   }
 
   .logo {
-    top: max(16px, env(safe-area-inset-top, 16px) + 16px); /* Closer to top on mobile with safe area */
+    top: max(40px, env(safe-area-inset-top, 40px) + 40px); /* Moved down on mobile to reduce gap with card */
     width: clamp(120px, 20vw, 160px);
   }
 }

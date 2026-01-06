@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(180px, env(safe-area-inset-bottom) + 180px) max(20px, env(safe-area-inset-left)); /* Increased bottom padding to prevent logo overlap */
+  padding: max(40px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(100px, env(safe-area-inset-bottom) + 100px) max(20px, env(safe-area-inset-left)); /* Bottom padding to prevent subtitle/logo overlap */
   position: relative;
   overflow: hidden;
 }
@@ -86,7 +86,7 @@
   }
 
   .logo {
-    bottom: max(100px, env(safe-area-inset-bottom, 100px) + 100px); /* Extra space on mobile to prevent overlap */
+    bottom: max(16px, env(safe-area-inset-bottom, 16px) + 16px); /* Close to bottom on mobile, leaving minimal space */
   }
 }
 
@@ -229,10 +229,10 @@
   margin-bottom: 0;
 }
 
-/* Swiggy Logo - Bottom Center - Same as intro screen */
+/* Swiggy Logo - Bottom Center - Positioned at bottom with space to prevent subtitle overlap */
 .logo {
-  position: fixed; /* Changed from absolute to fixed for better positioning */
-  bottom: max(80px, env(safe-area-inset-bottom, 80px) + 80px); /* Responsive bottom spacing with safe area */
+  position: fixed; /* Fixed to viewport for consistent positioning */
+  bottom: max(20px, env(safe-area-inset-bottom, 20px) + 20px); /* Close to bottom, leaving minimal space */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(120px, 20vw, 180px);
