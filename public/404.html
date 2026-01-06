@@ -8,13 +8,28 @@
       // https://github.com/rafgraph/spa-github-pages
       var pathSegmentsToKeep = 1;
       var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
+      
+      // Get the path after the base path
+      var path = l.pathname;
+      var basePath = path.split('/').slice(0, 1 + pathSegmentsToKeep).join('/');
+      var pathAfterBase = path.slice(basePath.length);
+      
+      // If there's a query redirect, extract it
+      if (l.search && l.search.startsWith('?/')) {
+        pathAfterBase = l.search.slice(2); // Remove '?/'
+      }
+      
+      // Clean up the path
+      pathAfterBase = pathAfterBase.replace(/&/g, '~and~');
+      
+      // Redirect to proper path (not query string)
+      if (pathAfterBase && pathAfterBase !== '/') {
+        var newPath = basePath + pathAfterBase;
+        l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + newPath + l.hash);
+      } else {
+        // Just go to base path
+        l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + basePath + '/');
+      }
     </script>
   </head>
   <body>

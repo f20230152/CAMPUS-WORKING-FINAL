@@ -16,7 +16,7 @@ const SCREEN_DURATIONS = {
 };
 
 function App() {
-  const { poiId } = useParams(); // Get POI ID from URL
+  const { poiId: paramPoiId } = useParams(); // Get POI ID from URL params
   const [campusData, setCampusData] = useState(defaultCampusData);
   const [isLoading, setIsLoading] = useState(true);
   const [currentScreen, setCurrentScreen] = useState(0);
@@ -24,14 +24,57 @@ function App() {
   const lastTapTimeRef = useRef(0);
   const lastTapScreenRef = useRef(0);
 
+  // Extract POI ID from URL - handle both pathname and query string (for 404 redirects)
+  const getPoiIdFromUrl = () => {
+    // First try from React Router params
+    if (paramPoiId) {
+      return paramPoiId;
+    }
+    
+    // If not in params, check pathname directly
+    const pathname = window.location.pathname;
+    const basePath = import.meta.env.BASE_URL || '/';
+    let cleanPath = pathname;
+    
+    // Remove base path
+    if (basePath !== '/') {
+      cleanPath = pathname.replace(basePath, '/');
+    }
+    
+    // Extract from pathname
+    const segments = cleanPath.split('/').filter(s => s && s !== 'CAMPUS-WORKING-FINAL' && s !== 'index.html');
+    if (segments.length > 0) {
+      const lastSegment = segments[segments.length - 1];
+      if (lastSegment && lastSegment !== '') {
+        return lastSegment;
+      }
+    }
+    
+    // If not in pathname, check query string (for 404 redirects)
+    const search = window.location.search;
+    if (search && search.startsWith('?/')) {
+      const queryPath = search.slice(2).split('&')[0]; // Get path from query, ignore other params
+      const querySegments = queryPath.split('/').filter(s => s);
+      if (querySegments.length > 0) {
+        return querySegments[querySegments.length - 1];
+      }
+    }
+    
+    return null;
+  };
+
+  const poiId = getPoiIdFromUrl();
+
   // Debug: Log POI ID on mount and changes
   useEffect(() => {
     console.log('=== App Component ===');
-    console.log('POI ID from useParams:', poiId);
+    console.log('POI ID from useParams:', paramPoiId);
+    console.log('POI ID extracted:', poiId);
     console.log('Full URL:', window.location.href);
     console.log('Pathname:', window.location.pathname);
+    console.log('Search:', window.location.search);
     console.log('Base URL:', import.meta.env.BASE_URL);
-  }, [poiId]);
+  }, [poiId, paramPoiId]);
 
   // Load POI data when component mounts or POI ID changes
   useEffect(() => {
