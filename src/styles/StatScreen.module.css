@@ -22,7 +22,7 @@
 /* Mobile portrait optimizations */
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .statScreen {
-    padding: 24px 16px;
+    padding: 24px 16px max(80px, env(safe-area-inset-bottom) + 80px) 16px; /* Bottom padding to prevent subtitle/logo overlap on mobile */
   }
   
   .title {
