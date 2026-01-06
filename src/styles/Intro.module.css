@@ -47,7 +47,7 @@
   font-size: clamp(16px, 4vw, 24px);
   font-weight: 600;
   opacity: 0;
-  color: #F25700;
+  color: #fe5200;
   letter-spacing: 2px;
   margin-bottom: 24px;
   text-transform: uppercase;
@@ -60,9 +60,9 @@
   font-weight: 900;
   text-align: center;
   margin-bottom: 20px;
-  text-shadow: 0 4px 20px rgba(242, 87, 0, 0.2);
+  text-shadow: 0 4px 20px rgba(254, 82, 0, 0.2);
   line-height: 1.2;
-  color: #F25700;
+  color: #fe5200;
   opacity: 0;
   transform: translateY(20px) scale(0.95);
 }
@@ -80,7 +80,7 @@
   font-size: clamp(16px, 3.5vw, 20px);
   font-weight: 500;
   opacity: 0;
-  color: #D04500; /* Darker orange for better visibility */
+  color: #fe5200; /* Swiggy orange */
   letter-spacing: 1px;
   margin-top: 32px;
   transform: translateY(10px);
@@ -88,7 +88,7 @@
   background: rgba(255, 255, 255, 0.3); /* Light background for contrast */
   border-radius: 8px;
   backdrop-filter: blur(4px);
-  text-shadow: 0 2px 8px rgba(242, 87, 0, 0.3);
+  text-shadow: 0 2px 8px rgba(254, 82, 0, 0.3);
 }
 
 /* Swiggy Logo - Bottom Center - 2x bigger */
@@ -103,6 +103,7 @@
   z-index: 2;
   object-fit: contain;
   margin: 0 auto; /* Additional centering */
+  filter: brightness(0) saturate(100%) invert(47%) sepia(100%) saturate(2000%) hue-rotate(5deg) brightness(1) contrast(1);
 }
 
 /* Food Vector/Emoji Illustrations - Fixed Zones with rounded corners */

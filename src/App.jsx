@@ -30,7 +30,7 @@ function App() {
     { type: 'stat', component: StatScreen, data: { 
       title: 'Someone at ' + campusData.college_name + ' said:', 
       value: campusData.stats.largest_order_value, 
-      subtitle: 'One order. Infinite courage.',
+      subtitle: 'When group ordering got serious',
       statType: 'largest_order_value', 
       format: 'currency' 
     }},
@@ -49,19 +49,19 @@ function App() {
     { type: 'stat', component: StatScreen, data: { 
       title: 'One student.', 
       value: campusData.stats.max_orders_in_a_week, 
-      subtitle: 'Consistency is key.',
+      subtitle: 'Swiggy was basically a roommate',
       statType: 'max_orders' 
     }},
     { type: 'stat', component: StatScreen, data: { 
       title: 'One day.', 
       value: campusData.stats.max_pizzas_single_day, 
-      subtitle: 'The oven never rested.',
+      subtitle: 'Hostel party confirmed',
       statType: 'pizzas' 
     }},
     { type: 'stat', component: StatScreen, data: { 
       title: 'Biryani domination:', 
       value: campusData.stats.max_biryanis_single_day, 
-      subtitle: 'History was cooked',
+      subtitle: 'Mess food took the day off',
       statType: 'biryanis' 
     }},
     { type: 'outro', component: Outro }

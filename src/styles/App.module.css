@@ -16,10 +16,10 @@
   bottom: calc(20px + env(safe-area-inset-bottom));
   right: calc(20px + env(safe-area-inset-right));
   z-index: 1000;
-  background: rgba(242, 87, 0, 0.15);
+  background: rgba(254, 82, 0, 0.15);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(242, 87, 0, 0.4);
-  color: #F25700;
+  border: 1px solid rgba(254, 82, 0, 0.4);
+  color: #fe5200;
   padding: 12px 24px;
   border-radius: 30px;
   font-size: 14px;
@@ -39,9 +39,9 @@
 
 .skipButton:hover,
 .skipButton:active {
-  background: rgba(242, 87, 0, 0.25);
+  background: rgba(254, 82, 0, 0.25);
   transform: scale(0.98);
-  border-color: rgba(242, 87, 0, 0.6);
+  border-color: rgba(254, 82, 0, 0.6);
 }
 
 /* Mobile portrait optimizations */

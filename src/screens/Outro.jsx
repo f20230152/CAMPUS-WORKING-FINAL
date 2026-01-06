@@ -47,13 +47,13 @@ function Outro({ campusData, onReplay }) {
           {/* Tile 1 - Full width */}
           <div className={`${styles.metricTile} ${styles.spanTwoColumns} ${styles.centeredTile}`}>
             <div className={styles.tileLabel}>FAVOURITE DISH</div>
-            <div className={styles.tileValue}>{campusData.stats.favourite_dish.toUpperCase()}</div>
+            <div className={styles.tileValue}>{campusData.stats.favourite_dish.toUpperCase()} 🍛</div>
           </div>
 
           {/* Tile 2 */}
           <div className={styles.metricTile}>
             <div className={styles.tileLabel}>12 AM CRAVING</div>
-            <div className={styles.tileValue}>{campusData.stats.official_12am_craving.toUpperCase()}</div>
+            <div className={styles.tileValue}>{campusData.stats.official_12am_craving.toUpperCase()} 🍔</div>
           </div>
 
           {/* Tile 3 */}
@@ -67,26 +67,26 @@ function Outro({ campusData, onReplay }) {
 
           {/* Tile 4 */}
           <div className={styles.metricTile}>
-            <div className={styles.tileLabel}>LARGEST ORDER</div>
-            <div className={styles.tileValue}>{formatCurrency(campusData.stats.largest_order_value)}</div>
+            <div className={styles.tileLabel}>HIGHEST SPEND ORDER</div>
+            <div className={styles.tileValue}>{formatCurrency(campusData.stats.largest_order_value)} 💰</div>
           </div>
 
           {/* Tile 5 */}
           <div className={styles.metricTile}>
-            <div className={styles.tileLabel}>MAX ORDERS (WEEK)</div>
-            <div className={styles.tileValue}>{campusData.stats.max_orders_in_a_week} ORDERS</div>
+            <div className={styles.tileLabel}>MAX ORDERS BY A STUDENT (WEEK)</div>
+            <div className={styles.tileValue}>{campusData.stats.max_orders_in_a_week} 📦</div>
           </div>
 
           {/* Tile 6 */}
           <div className={styles.metricTile}>
-            <div className={styles.tileLabel}>PIZZA PEAK (1 DAY)</div>
-            <div className={styles.tileValue}>{campusData.stats.max_pizzas_single_day} PIZZAS</div>
+            <div className={styles.tileLabel}>MAX PIZZAS IN A DAY</div>
+            <div className={styles.tileValue}>{campusData.stats.max_pizzas_single_day} 🍕</div>
           </div>
 
           {/* Tile 7 */}
           <div className={styles.metricTile}>
-            <div className={styles.tileLabel}>BIRYANI PEAK (1 DAY)</div>
-            <div className={styles.tileValue}>{campusData.stats.max_biryanis_single_day} PLATES</div>
+            <div className={styles.tileLabel}>MAX BIRYANI-S IN A DAY</div>
+            <div className={styles.tileValue}>{campusData.stats.max_biryanis_single_day} 🍗🍚</div>
           </div>
         </div>
 
