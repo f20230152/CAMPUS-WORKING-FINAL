@@ -85,7 +85,7 @@ function App() {
     { type: 'stat', component: StatScreen, data: { 
       title: 'Your campus runs on', 
       value: campusData.stats.favourite_dish, 
-      subtitle: 'When in doubt, order a Biryani!',
+      subtitle: `When in doubt, order a ${campusData.stats.favourite_dish}!`,
       statType: 'favourite_dish' 
     }},
     { type: 'stat', component: StatScreen, data: { 

@@ -255,23 +255,7 @@ function StatScreen({ data }) {
         duration: 0.5
       }, '-=0.2');
       
-      // Food glows in center
-      if (illustrationRef.current) {
-        tl.to(illustrationRef.current, {
-          opacity: 1,
-          scale: 0,
-          duration: 0.6
-        }, '-=0.3')
-        .to(illustrationRef.current, {
-          scale: 1.2,
-          duration: 0.5,
-          ease: 'back.out(1.7)'
-        })
-        .to(illustrationRef.current, {
-          scale: 1,
-          duration: 0.3
-        }, '-=0.2');
-      }
+      // No floating emoji for 12am_craving - removed as per request
       
       // Dish name
       tl.to(valueRef.current, {
@@ -1026,9 +1010,7 @@ function StatScreen({ data }) {
       <div className={styles.floatingFood}></div>
       <div className={styles.floatingFood}></div>
       <div className={styles.floatingFood}></div>
-      {statType === '12am_craving' && (
-        <div className={styles.moon}></div>
-      )}
+      {/* Moon removed - no longer needed */}
       
       <div 
         ref={titleRef} 
@@ -1071,13 +1053,7 @@ function StatScreen({ data }) {
         {statType === 'biryanis' && null}
       </div>
 
-      {statType === '12am_craving' && (
-        <div ref={illustrationRef} className={styles.illustration}>
-          <div className={styles.dishIcon}>
-            🍔
-          </div>
-        </div>
-      )}
+      {/* No floating emoji for 12am_craving - removed as per request */}
 
 
       {data.subtitle && (
