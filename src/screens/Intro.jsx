@@ -32,13 +32,21 @@ function Intro({ campusData }) {
       vector5Ref.current
     ], { opacity: 0 });
 
-    // Animate "Swiggy Presents" - fade in from top
+    // Animate logo first - fade in from top
+    tl.to(logoRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+
+    // Animate "presents" - fade in from top
     tl.to(presentsRef.current, {
       opacity: 0.8,
       y: 0,
       duration: 0.6,
       ease: 'power2.out'
-    });
+    }, '-=0.3');
 
     // Animate main title - fade in and slight scale
     tl.to(titleRef.current, {
@@ -56,13 +64,6 @@ function Intro({ campusData }) {
       duration: 0.6,
       ease: 'power2.out'
     }, '-=0.4');
-
-    // Animate logo - fade in (scale already set in CSS)
-    tl.to(logoRef.current, {
-      opacity: 0.7,
-      duration: 0.6,
-      ease: 'back.out(1.2)'
-    }, '-=0.2');
 
     // Animate food vectors - subtle fade in
     tl.to([
@@ -162,8 +163,16 @@ function Intro({ campusData }) {
 
       {/* Hero Text Structure - Center Aligned */}
       <div className={styles.heroContent}>
+        {/* Swiggy Logo - Top Center */}
+        <img 
+          ref={logoRef}
+          src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
+          alt="Swiggy" 
+          className={styles.logo}
+        />
+        
         <div ref={presentsRef} className={styles.presents}>
-          Swiggy Presents
+          presents
         </div>
         
         <h1 ref={titleRef} className={styles.title}>
@@ -172,17 +181,9 @@ function Intro({ campusData }) {
         </h1>
         
         <div ref={ctaRef} className={styles.cta}>
-          tap anywhere to continue →
+          tap to continue
         </div>
       </div>
-
-      {/* Swiggy Logo - Bottom Center */}
-      <img 
-        ref={logoRef}
-        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
-        alt="Swiggy" 
-        className={styles.logo}
-      />
     </div>
   );
 }

@@ -237,7 +237,6 @@
   z-index: 2;
   object-fit: contain;
   margin: 0 auto;
-  filter: brightness(0) saturate(100%) invert(47%) sepia(100%) saturate(2000%) hue-rotate(5deg) brightness(1) contrast(1);
 }
 
 .dishIcon {

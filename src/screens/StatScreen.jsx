@@ -95,23 +95,7 @@ function StatScreen({ data }) {
         duration: 0.3
       }, '-=0.2');
 
-      // Dish icon (floating emoji) drops from top - positioned above subtitle
-      if (illustrationRef.current) {
-        tl.fromTo(illustrationRef.current, 
-          { opacity: 0, y: -200, scale: 0.5, rotation: -180 },
-          { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1.2, 
-            rotation: 0,
-            duration: 0.8,
-            ease: 'bounce.out'
-          }, '-=0.5')
-        .to(illustrationRef.current, {
-          scale: 1,
-          duration: 0.3
-        });
-      }
+      // No floating emoji for favourite_dish - removed as per request
 
       // Subtitle - force visibility for favourite_dish
       if (subtitleRef.current && data.subtitle && statType === 'favourite_dish') {
@@ -597,8 +581,8 @@ function StatScreen({ data }) {
   };
 
   const createBiryaniConfetti = () => {
-    // Create 100 small biryani/rice emojis raining across the screen
-    const emojis = ['🍛', '🍚']; // Mix of biryani and rice emojis
+    // Create 100 small food emojis raining across the screen - all kinds of dishes
+    const emojis = ['🍛', '🍚', '🍕', '🍔', '🌮', '🌯', '🥙', '🥗', '🍜', '🍝', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖', '🥘', '🍳', '🥟', '🍢', '🍡', '🥠', '🍩', '🍪', '🥧', '🍰', '🧁', '🍫', '🍬', '🍭', '🌭', '🥪', '🌯', '🥗', '🍲', '🍱', '🍣', '🍤', '🍗', '🍖']; // All kinds of food emojis
     if (!containerRef.current) {
       // Retry after a short delay if container isn't ready
       setTimeout(() => createBiryaniConfetti(), 100);
@@ -1088,11 +1072,10 @@ function StatScreen({ data }) {
         {statType === 'biryanis' && null}
       </div>
 
-      {(statType === 'favourite_dish' || statType === '12am_craving') && (
+      {statType === '12am_craving' && (
         <div ref={illustrationRef} className={styles.illustration}>
           <div className={styles.dishIcon}>
-            {statType === 'favourite_dish' && '🍛'}
-            {statType === '12am_craving' && '🍔'}
+            🍔
           </div>
         </div>
       )}
