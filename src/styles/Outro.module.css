@@ -11,7 +11,7 @@
   background: linear-gradient(135deg, #FFE5D4 0%, #FFD4C4 30%, #FFB88C 70%, #FFA07A 100%);
   position: relative;
   overflow-y: auto;
-  padding: max(120px, env(safe-area-inset-top) + 120px) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); /* Increased top padding for logo */
+  padding: max(80px, env(safe-area-inset-top) + 80px) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left)); /* Top padding for logo space */
 }
 
 .outro::before {
@@ -213,16 +213,16 @@
 
 /* Swiggy Logo - Top Center - Same as intro screen */
 .logo {
-  position: absolute;
-  top: 40px;
+  position: fixed; /* Fixed to viewport for consistent positioning */
+  top: max(20px, env(safe-area-inset-top, 20px) + 20px); /* Responsive top spacing with safe area */
   left: 50%;
   transform: translateX(-50%);
   width: clamp(140px, 22vw, 200px);
   height: auto;
   opacity: 1;
-  z-index: 100; /* Higher z-index to ensure it's above other elements */
+  z-index: 1000; /* Very high z-index to ensure it's above all elements */
   object-fit: contain;
-  margin: 0 auto;
+  margin: 0;
   pointer-events: none; /* Prevent interaction issues */
 }
 
@@ -274,7 +274,7 @@
   }
 
   .logo {
-    top: 24px; /* Closer to top on mobile */
+    top: max(16px, env(safe-area-inset-top, 16px) + 16px); /* Closer to top on mobile with safe area */
     width: clamp(120px, 20vw, 160px);
   }
 }
