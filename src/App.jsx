@@ -228,19 +228,26 @@ function App() {
     
     // Special handling for intro screen - any tap starts audio and goes forward
     if (screen.type === 'intro') {
-      // Start audio immediately
+      // CRITICAL: Resume AudioContext on first user interaction (iOS requirement)
       const audioGenerator = getAudioGenerator();
       audioGenerator.resume().then(() => {
+        // Audio context is now running, safe to start music
         audioGenerator.startMusic();
+        setIsMusicPlaying(true);
       }).catch(err => {
         console.error('Error starting audio:', err);
-        audioGenerator.startMusic();
+        // Fallback: try direct playback (may work without Web Audio API)
+        try {
+          audioGenerator.startMusic();
+          setIsMusicPlaying(true);
+        } catch (fallbackErr) {
+          console.warn('Audio playback blocked - user may need to interact again');
+        }
       });
       
       // Always go forward from intro
       if (currentScreen < screens.length - 1) {
         setCurrentScreen(prev => prev + 1);
-        setIsMusicPlaying(true);
       }
       return;
     }

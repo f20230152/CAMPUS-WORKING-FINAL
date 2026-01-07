@@ -11,11 +11,15 @@ class AudioGenerator {
     this.backgroundMusic = null;
     this.musicSource = null;
     this.audioContextInitialized = false;
+    this.userInteracted = false;
+    this.pendingPlay = false;
+    // Preload audio but don't initialize context until user interaction
     this.loadBackgroundMusic();
   }
 
   initAudioContext() {
-    if (this.audioContextInitialized) return;
+    // Only initialize after user interaction
+    if (this.audioContextInitialized || !this.userInteracted) return;
     
     try {
       this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -32,12 +36,13 @@ class AudioGenerator {
       this.musicGain.connect(this.masterGain);
       this.sfxGain.connect(this.masterGain);
       this.audioContextInitialized = true;
+      console.log('Audio context initialized after user interaction');
     } catch (error) {
       console.error('Audio context initialization failed:', error);
     }
   }
 
-  // Load background music file
+  // Load background music file (preload only, no autoplay)
   loadBackgroundMusic() {
     try {
       // Try to load MPEG first, fallback to OGG
@@ -45,13 +50,19 @@ class AudioGenerator {
       const baseUrl = import.meta.env.BASE_URL || '/';
       const musicPath = `${baseUrl}music/background-music.mpeg`;
       this.backgroundMusic = new Audio(musicPath);
+      
+      // CRITICAL: iOS requirements
       this.backgroundMusic.loop = true;
       this.backgroundMusic.preload = 'auto';
-      this.backgroundMusic.volume = 0.4; // Default volume
+      this.backgroundMusic.volume = 0.4;
+      this.backgroundMusic.playsInline = true; // iOS requirement
+      this.backgroundMusic.setAttribute('playsinline', 'true'); // iOS requirement
+      this.backgroundMusic.setAttribute('webkit-playsinline', 'true'); // iOS legacy
+      // NO autoplay - playback only after user interaction
       
       // Handle audio element load success
       this.backgroundMusic.addEventListener('loadeddata', () => {
-        console.log('Background music file loaded successfully');
+        console.log('Background music file loaded successfully (preloaded)');
         // Don't connect to Web Audio API until user interaction
       });
 
@@ -66,10 +77,12 @@ class AudioGenerator {
           this.backgroundMusic.loop = true;
           this.backgroundMusic.preload = 'auto';
           this.backgroundMusic.volume = 0.4;
+          this.backgroundMusic.playsInline = true;
+          this.backgroundMusic.setAttribute('playsinline', 'true');
+          this.backgroundMusic.setAttribute('webkit-playsinline', 'true');
           
           this.backgroundMusic.addEventListener('loadeddata', () => {
-            console.log('OGG fallback loaded successfully');
-            // Don't connect to Web Audio API until user interaction
+            console.log('OGG fallback loaded successfully (preloaded)');
           });
         } catch (oggError) {
           console.error('Failed to load OGG fallback:', oggError);
@@ -99,7 +112,7 @@ class AudioGenerator {
     }
   }
 
-  // Start playing background music
+  // Start playing background music (only after user interaction)
   startMusic() {
     if (!this.backgroundMusic) {
       console.warn('Background music not loaded');
@@ -107,6 +120,13 @@ class AudioGenerator {
     }
     
     if (this.isPlaying) {
+      return;
+    }
+    
+    // CRITICAL: Only play after user interaction
+    if (!this.userInteracted) {
+      console.log('Audio playback deferred until user interaction');
+      this.pendingPlay = true;
       return;
     }
     
@@ -127,8 +147,11 @@ class AudioGenerator {
             // Try playing directly without Web Audio API
             this.playDirectly();
           });
-        } else {
+        } else if (this.audioContext.state === 'running') {
           this.tryConnectAndPlay();
+        } else {
+          // Context not ready, try direct playback
+          this.playDirectly();
         }
       } else {
         // Fallback: play directly without Web Audio API
@@ -221,32 +244,71 @@ class AudioGenerator {
   }
 
   // Resume audio context (required after user interaction)
+  // This must be called on first user gesture (touchstart/click)
   resume() {
+    // Mark that user has interacted
+    this.userInteracted = true;
+    
     // Initialize audio context if not already done
     if (!this.audioContextInitialized) {
       this.initAudioContext();
     }
     
-    if (this.audioContext && this.audioContext.state === 'suspended') {
-      return this.audioContext.resume().then(() => {
-        console.log('Audio context resumed after user interaction');
-      }).catch(err => {
-        console.error('Error resuming audio context:', err);
-      });
+    if (this.audioContext) {
+      if (this.audioContext.state === 'suspended') {
+        return this.audioContext.resume().then(() => {
+          console.log('Audio context resumed after user interaction');
+          // If there was a pending play request, start music now
+          if (this.pendingPlay) {
+            this.pendingPlay = false;
+            this.startMusic();
+          }
+          return Promise.resolve();
+        }).catch(err => {
+          console.error('Error resuming audio context:', err);
+          // Still try to play directly if Web Audio fails
+          if (this.pendingPlay) {
+            this.pendingPlay = false;
+            this.playDirectly();
+          }
+          return Promise.reject(err);
+        });
+      } else if (this.audioContext.state === 'running') {
+        // Context already running, start music if pending
+        if (this.pendingPlay) {
+          this.pendingPlay = false;
+          this.startMusic();
+        }
+        return Promise.resolve();
+      }
     }
+    
+    // If no audio context, try direct playback
+    if (this.pendingPlay) {
+      this.pendingPlay = false;
+      this.playDirectly();
+    }
+    
     return Promise.resolve();
   }
 }
 
-// Export singleton instance
+// Export singleton instance - ensures audio state persists across screen transitions
 let audioGeneratorInstance = null;
 
 export const getAudioGenerator = () => {
   if (!audioGeneratorInstance) {
     audioGeneratorInstance = new AudioGenerator();
+    console.log('Audio generator singleton created');
   }
   return audioGeneratorInstance;
 };
+
+// Ensure audio state persists - prevent garbage collection
+if (typeof window !== 'undefined') {
+  // Keep reference to prevent GC
+  window.__audioGeneratorInstance = () => audioGeneratorInstance;
+}
 
 export default AudioGenerator;
 

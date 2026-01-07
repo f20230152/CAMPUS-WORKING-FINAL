@@ -10,6 +10,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Ensure non-scrollable */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
+  touch-action: manipulation;
 }
 
 /* Stage container with fixed aspect ratio - scales like Spotify Wrapped */

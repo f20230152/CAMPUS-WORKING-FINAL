@@ -8,6 +8,7 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
   const [volume, setVolume] = useState(0.4); // Default volume at 40%
   const [isMuted, setIsMuted] = useState(false);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const [audioBlocked, setAudioBlocked] = useState(false);
 
   // Initialize audio generator
   useEffect(() => {
@@ -20,13 +21,16 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
     };
   }, []);
 
-  // Handle initial user interaction for autoplay
+  // Handle initial user interaction for audio unlock (iOS requirement)
   useEffect(() => {
-    const handleFirstInteraction = () => {
+    const handleFirstInteraction = (e) => {
       if (!hasUserInteracted && audioGeneratorRef.current) {
         setHasUserInteracted(true);
-        // Resume audio context first, then start music
+        // CRITICAL: Resume AudioContext on first user gesture (iOS requirement)
+        // This must happen synchronously with the user event
         audioGeneratorRef.current.resume().then(() => {
+          console.log('Audio context unlocked after user interaction');
+          // Start music if it should be playing
           if (isPlaying && audioGeneratorRef.current) {
             audioGeneratorRef.current.startMusic();
           }
@@ -34,21 +38,33 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
           console.error('Failed to resume audio context:', err);
           // Try starting music anyway (might work without Web Audio API)
           if (isPlaying && audioGeneratorRef.current) {
-            audioGeneratorRef.current.startMusic();
+            try {
+              audioGeneratorRef.current.startMusic();
+            } catch (playErr) {
+              console.warn('Audio playback may be blocked by browser policy');
+              setAudioBlocked(true);
+              // Hide the warning after 5 seconds
+              setTimeout(() => setAudioBlocked(false), 5000);
+            }
           }
         });
       }
     };
 
-    // Listen for any user interaction
-    const events = ['click', 'touchstart', 'keydown'];
+    // Listen for user interaction - touchstart is critical for iOS
+    // Use capture phase to ensure we catch it early
+    const events = ['touchstart', 'click', 'keydown'];
     events.forEach(event => {
-      document.addEventListener(event, handleFirstInteraction, { once: true });
+      document.addEventListener(event, handleFirstInteraction, { 
+        once: true, 
+        passive: false, // Allow preventDefault if needed
+        capture: true // Capture in capture phase for iOS
+      });
     });
 
     return () => {
       events.forEach(event => {
-        document.removeEventListener(event, handleFirstInteraction);
+        document.removeEventListener(event, handleFirstInteraction, { capture: true });
       });
     };
   }, [hasUserInteracted, isPlaying]);
@@ -110,15 +126,24 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
   };
 
   return (
-    <div className={styles.musicControls} onClick={handleControlsClick} onTouchStart={handleControlsClick}>
-      <button
-        className={styles.muteButton}
-        onClick={toggleMute}
-        aria-label={isMuted ? 'Unmute' : 'Mute'}
-      >
-        {isMuted ? '🔇' : '🔊'}
-      </button>
-    </div>
+    <>
+      {/* Fallback visual cue if audio is blocked */}
+      {audioBlocked && (
+        <div className={styles.audioBlockedWarning}>
+          <span>🔇</span>
+          <span>Tap to enable audio</span>
+        </div>
+      )}
+      <div className={styles.musicControls} onClick={handleControlsClick} onTouchStart={handleControlsClick}>
+        <button
+          className={styles.muteButton}
+          onClick={toggleMute}
+          aria-label={isMuted ? 'Unmute' : 'Mute'}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
+      </div>
+    </>
   );
 }
 

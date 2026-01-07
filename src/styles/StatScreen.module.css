@@ -9,6 +9,9 @@
   position: relative;
   overflow: hidden;
   aspect-ratio: 390 / 844;
+  /* Ensure non-scrollable */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
 }
 
 /* Equal vertical spacing for 12am_craving screen */

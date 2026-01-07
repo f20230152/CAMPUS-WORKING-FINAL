@@ -39,12 +39,16 @@ body {
   }
 }
 
-/* Root container with dynamic viewport height */
+/* Root container with dynamic viewport height - non-scrollable */
 #root {
   height: calc(var(--vh) * 100);
   width: 100vw;
   position: relative;
   overflow: hidden;
+  /* Prevent scrolling on all devices */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
+  touch-action: pan-y pinch-zoom; /* Allow vertical pan but prevent scroll */
 }
 
 /* Optimize for portrait orientation */

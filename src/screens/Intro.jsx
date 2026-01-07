@@ -23,22 +23,47 @@ function Intro({ campusData }) {
     gsap.set([
       presentsRef.current, 
       titleRef.current, 
-      ctaRef.current, 
-      logoRef.current,
+      ctaRef.current
+    ], { opacity: 0 });
+    
+    // Logo wrapper starts visible but will be animated
+    if (logoRef.current) {
+      gsap.set(logoRef.current, { opacity: 0 });
+      const logoImg = logoRef.current.querySelector('img');
+      if (logoImg) {
+        gsap.set(logoImg, { opacity: 0 });
+      }
+    }
+    
+    // Vectors start with low opacity, will be animated to higher
+    gsap.set([
       vector1Ref.current,
       vector2Ref.current,
       vector3Ref.current,
       vector4Ref.current,
       vector5Ref.current
-    ], { opacity: 0 });
+    ], { opacity: 0.2 }); // Start with low opacity, animate to 0.6
 
     // Animate logo first - fade in from top
     tl.to(logoRef.current, {
       opacity: 1,
       y: 0,
       duration: 0.6,
-      ease: 'power2.out'
+      ease: 'power2.out',
+      immediateRender: false
     });
+    
+    // Also ensure logo image is visible
+    if (logoRef.current) {
+      const logoImg = logoRef.current.querySelector('img');
+      if (logoImg) {
+        tl.to(logoImg, {
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, '<');
+      }
+    }
 
     // Animate "presents" - fade in from top
     tl.to(presentsRef.current, {
@@ -65,7 +90,7 @@ function Intro({ campusData }) {
       ease: 'power2.out'
     }, '-=0.4');
 
-    // Animate food vectors - subtle fade in
+    // Animate food vectors - subtle fade in with higher visibility
     tl.to([
       vector1Ref.current,
       vector2Ref.current,
@@ -73,9 +98,10 @@ function Intro({ campusData }) {
       vector4Ref.current,
       vector5Ref.current
     ], {
-      opacity: 1,
+      opacity: 0.6, // More visible than before
       duration: 1,
-      ease: 'power1.out'
+      ease: 'power1.out',
+      immediateRender: false
     }, '-=0.8');
 
     // Start subtle movement animations for vectors
