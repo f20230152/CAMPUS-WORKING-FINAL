@@ -13,6 +13,9 @@ class AudioGenerator {
     this.audioContextInitialized = false;
     this.userInteracted = false;
     this.pendingPlay = false;
+    // Detect iOS
+    this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     // Preload audio but don't initialize context until user interaction
     this.loadBackgroundMusic();
   }
@@ -130,6 +133,13 @@ class AudioGenerator {
       return;
     }
     
+    // iOS: Use direct audio element playback (no Web Audio API)
+    if (this.isIOS) {
+      console.log('iOS detected - using direct audio playback');
+      this.playDirectly();
+      return;
+    }
+    
     try {
       // Initialize audio context if not already done (after user interaction)
       if (!this.audioContextInitialized) {
@@ -160,6 +170,8 @@ class AudioGenerator {
     } catch (error) {
       console.error('Error starting music:', error);
       this.isPlaying = false;
+      // Try direct playback as last resort
+      this.playDirectly();
     }
   }
 
@@ -208,40 +220,80 @@ class AudioGenerator {
       return;
     }
     
-    // Wait for audio to be ready
-    if (this.backgroundMusic.readyState < 2) {
-      this.backgroundMusic.addEventListener('canplaythrough', () => {
+    // For iOS, try to play immediately if ready, otherwise wait
+    if (this.isIOS) {
+      // iOS requires immediate play on user interaction
+      if (this.backgroundMusic.readyState >= 2) {
         this.attemptPlay();
-      }, { once: true });
-      // Also try loading
-      this.backgroundMusic.load();
+      } else {
+        // Wait for audio to be ready
+        const playWhenReady = () => {
+          if (this.backgroundMusic.readyState >= 2) {
+            this.attemptPlay();
+          } else {
+            // Force load
+            this.backgroundMusic.load();
+            this.backgroundMusic.addEventListener('canplaythrough', () => {
+              this.attemptPlay();
+            }, { once: true });
+          }
+        };
+        playWhenReady();
+      }
     } else {
-      this.attemptPlay();
+      // Non-iOS: Wait for audio to be ready
+      if (this.backgroundMusic.readyState < 2) {
+        this.backgroundMusic.addEventListener('canplaythrough', () => {
+          this.attemptPlay();
+        }, { once: true });
+        // Also try loading
+        this.backgroundMusic.load();
+      } else {
+        this.attemptPlay();
+      }
     }
   }
   
   attemptPlay() {
+    if (!this.backgroundMusic || this.isPlaying) {
+      return;
+    }
+    
     this.isPlaying = true;
-    const playPromise = this.backgroundMusic.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        console.log('Background music started playing (direct)');
-      }).catch(error => {
-        console.error('Error playing background music:', error);
-        this.isPlaying = false;
-        // If play failed, try again after a short delay
-        if (error.name !== 'NotAllowedError') {
-          setTimeout(() => {
-            if (!this.isPlaying) {
-              this.attemptPlay();
-            }
-          }, 500);
-        }
-      });
-    } else {
-      // For older browsers
-      this.backgroundMusic.play();
-      this.isPlaying = true;
+    
+    // CRITICAL for iOS: play() must be called synchronously with user event
+    try {
+      const playPromise = this.backgroundMusic.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log('Background music started playing (direct)');
+          this.isPlaying = true;
+        }).catch(error => {
+          console.error('Error playing background music:', error);
+          this.isPlaying = false;
+          
+          // For iOS, if NotAllowedError, user needs to interact again
+          if (error.name === 'NotAllowedError') {
+            console.warn('Audio playback blocked - user interaction required');
+            this.userInteracted = false; // Reset to allow retry
+          } else if (error.name !== 'AbortError') {
+            // Retry for other errors (but not AbortError)
+            setTimeout(() => {
+              if (!this.isPlaying && this.userInteracted) {
+                this.attemptPlay();
+              }
+            }, 500);
+          }
+        });
+      } else {
+        // For older browsers
+        this.backgroundMusic.play();
+        this.isPlaying = true;
+        console.log('Background music started playing (direct - legacy)');
+      }
+    } catch (error) {
+      console.error('Exception during play():', error);
+      this.isPlaying = false;
     }
   }
 
@@ -296,10 +348,22 @@ class AudioGenerator {
 
   // Resume audio context (required after user interaction)
   // This must be called on first user gesture (touchstart/click)
+  // CRITICAL: For iOS, this should trigger direct audio playback immediately
   resume() {
     // Mark that user has interacted
     this.userInteracted = true;
     
+    // For iOS, skip Web Audio API and play directly
+    if (this.isIOS) {
+      console.log('iOS detected - skipping Web Audio API, using direct playback');
+      if (this.pendingPlay) {
+        this.pendingPlay = false;
+        this.playDirectly();
+      }
+      return Promise.resolve();
+    }
+    
+    // For non-iOS, use Web Audio API
     // Initialize audio context if not already done
     if (!this.audioContextInitialized) {
       this.initAudioContext();

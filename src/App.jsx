@@ -234,25 +234,45 @@ function App() {
       // Mark user interaction immediately
       audioGenerator.userInteracted = true;
       
-      // Resume audio context and start music
-      audioGenerator.resume().then(() => {
-        // Audio context is now running, safe to start music
-        setTimeout(() => {
+      // For iOS, play directly without delay
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      
+      if (isIOS) {
+        // iOS: Play immediately on user interaction (synchronously)
+        audioGenerator.resume().then(() => {
+          // startMusic() will handle iOS-specific playback
           audioGenerator.startMusic();
           setIsMusicPlaying(true);
-        }, 100); // Small delay to ensure context is fully ready
-      }).catch(err => {
-        console.error('Error resuming audio context:', err);
-        // Still try to start music directly (may work without Web Audio API)
-        setTimeout(() => {
+        }).catch(err => {
+          console.error('Error on iOS audio:', err);
+          // Try direct play anyway
           try {
             audioGenerator.startMusic();
             setIsMusicPlaying(true);
           } catch (fallbackErr) {
-            console.warn('Audio playback blocked - user may need to interact again');
+            console.warn('Audio playback blocked on iOS');
           }
-        }, 100);
-      });
+        });
+      } else {
+        // Non-iOS: Resume audio context and start music
+        audioGenerator.resume().then(() => {
+          setTimeout(() => {
+            audioGenerator.startMusic();
+            setIsMusicPlaying(true);
+          }, 100);
+        }).catch(err => {
+          console.error('Error resuming audio context:', err);
+          setTimeout(() => {
+            try {
+              audioGenerator.startMusic();
+              setIsMusicPlaying(true);
+            } catch (fallbackErr) {
+              console.warn('Audio playback blocked');
+            }
+          }, 100);
+        });
+      }
       
       // Always go forward from intro
       if (currentScreen < screens.length - 1) {

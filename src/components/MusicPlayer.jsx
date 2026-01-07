@@ -26,35 +26,58 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
     const handleFirstInteraction = (e) => {
       if (!hasUserInteracted && audioGeneratorRef.current) {
         setHasUserInteracted(true);
+        
+        // Detect iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
         // Mark user interaction immediately
         audioGeneratorRef.current.userInteracted = true;
         
-        // CRITICAL: Resume AudioContext on first user gesture (iOS requirement)
-        // This must happen synchronously with the user event
-        audioGeneratorRef.current.resume().then(() => {
-          console.log('Audio context unlocked after user interaction');
-          // Start music if it should be playing - with small delay to ensure context is ready
-          setTimeout(() => {
+        if (isIOS) {
+          // iOS: Play immediately, synchronously with user event
+          console.log('iOS detected - playing audio directly');
+          audioGeneratorRef.current.resume().then(() => {
             if (isPlaying && audioGeneratorRef.current) {
               audioGeneratorRef.current.startMusic();
             }
-          }, 100);
-        }).catch(err => {
-          console.error('Failed to resume audio context:', err);
-          // Try starting music anyway (might work without Web Audio API)
-          setTimeout(() => {
+          }).catch(err => {
+            console.error('Failed to start audio on iOS:', err);
+            // Try anyway
             if (isPlaying && audioGeneratorRef.current) {
               try {
                 audioGeneratorRef.current.startMusic();
               } catch (playErr) {
-                console.warn('Audio playback may be blocked by browser policy');
+                console.warn('Audio playback blocked on iOS');
                 setAudioBlocked(true);
-                // Hide the warning after 5 seconds
                 setTimeout(() => setAudioBlocked(false), 5000);
               }
             }
-          }, 100);
-        });
+          });
+        } else {
+          // Non-iOS: Resume AudioContext on first user gesture
+          audioGeneratorRef.current.resume().then(() => {
+            console.log('Audio context unlocked after user interaction');
+            setTimeout(() => {
+              if (isPlaying && audioGeneratorRef.current) {
+                audioGeneratorRef.current.startMusic();
+              }
+            }, 100);
+          }).catch(err => {
+            console.error('Failed to resume audio context:', err);
+            setTimeout(() => {
+              if (isPlaying && audioGeneratorRef.current) {
+                try {
+                  audioGeneratorRef.current.startMusic();
+                } catch (playErr) {
+                  console.warn('Audio playback may be blocked by browser policy');
+                  setAudioBlocked(true);
+                  setTimeout(() => setAudioBlocked(false), 5000);
+                }
+              }
+            }, 100);
+          });
+        }
       }
     };
 
