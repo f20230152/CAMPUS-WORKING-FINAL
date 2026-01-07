@@ -46,12 +46,13 @@ class AudioGenerator {
   }
 
   // Load background music file (preload only, no autoplay)
+  // CRITICAL: Using AAC (.m4a) format for iOS/Android/Safari compatibility
   loadBackgroundMusic() {
     try {
-      // Try to load MPEG first, fallback to OGG
       // Use BASE_URL for GitHub Pages compatibility
       const baseUrl = import.meta.env.BASE_URL || '/';
-      const musicPath = `${baseUrl}music/background-music.mpeg`;
+      // Use .m4a (AAC) format - iOS/Android/Safari safe
+      const musicPath = `${baseUrl}music/background-music.m4a`;
       this.backgroundMusic = new Audio(musicPath);
       
       // CRITICAL: iOS requirements
@@ -71,12 +72,12 @@ class AudioGenerator {
 
       // Handle audio element errors
       this.backgroundMusic.addEventListener('error', (e) => {
-        console.error('Failed to load MPEG:', this.backgroundMusic.error);
-        console.warn('Trying OGG fallback');
+        console.error('Failed to load M4A:', this.backgroundMusic.error);
+        console.warn('Trying MPEG fallback');
         try {
           const baseUrl = import.meta.env.BASE_URL || '/';
-          const oggPath = `${baseUrl}music/background-music.ogg`;
-          this.backgroundMusic = new Audio(oggPath);
+          const mpegPath = `${baseUrl}music/background-music.mpeg`;
+          this.backgroundMusic = new Audio(mpegPath);
           this.backgroundMusic.loop = true;
           this.backgroundMusic.preload = 'auto';
           this.backgroundMusic.volume = 0.4;
@@ -85,10 +86,10 @@ class AudioGenerator {
           this.backgroundMusic.setAttribute('webkit-playsinline', 'true');
           
           this.backgroundMusic.addEventListener('loadeddata', () => {
-            console.log('OGG fallback loaded successfully (preloaded)');
+            console.log('MPEG fallback loaded successfully (preloaded)');
           });
-        } catch (oggError) {
-          console.error('Failed to load OGG fallback:', oggError);
+        } catch (mpegError) {
+          console.error('Failed to load MPEG fallback:', mpegError);
         }
       });
     } catch (error) {
