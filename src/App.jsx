@@ -7,7 +7,12 @@ import Outro from './screens/Outro';
 import MusicPlayer from './components/MusicPlayer';
 import { getAudioGenerator } from './utils/audioGenerator';
 import { loadPoiData } from './utils/loadPoiData';
+import { getPoiIdFromShortCode } from './utils/shortLinkLookup';
 import styles from './styles/App.module.css';
+
+// Design dimensions (iPhone 12/13 standard)
+const DESIGN_WIDTH = 390;
+const DESIGN_HEIGHT = 844;
 
 const SCREEN_DURATIONS = {
   intro: 4000,
@@ -23,9 +28,40 @@ function App() {
   const [isMusicPlaying, setIsMusicPlaying] = useState(true);
   const lastTapTimeRef = useRef(0);
   const lastTapScreenRef = useRef(0);
+  const [scale, setScale] = useState(1);
+  const stageRef = useRef(null);
 
   // Get POI ID from React Router params (HashRouter)
   const poiId = paramPoiId || null;
+
+  // Calculate and apply scale for Stage container
+  useEffect(() => {
+    const calculateScale = () => {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      const scaleX = viewportWidth / DESIGN_WIDTH;
+      const scaleY = viewportHeight / DESIGN_HEIGHT;
+      const newScale = Math.min(scaleX, scaleY);
+      
+      setScale(newScale);
+      
+      // Set CSS variable and transform with centering
+      if (stageRef.current) {
+        stageRef.current.style.setProperty('--scale', newScale);
+        stageRef.current.style.transform = `translate(-50%, -50%) scale(${newScale})`;
+      }
+    };
+    
+    calculateScale();
+    window.addEventListener('resize', calculateScale);
+    window.addEventListener('orientationchange', calculateScale);
+    
+    return () => {
+      window.removeEventListener('resize', calculateScale);
+      window.removeEventListener('orientationchange', calculateScale);
+    };
+  }, []);
 
   // Debug: Log POI ID on mount and changes
   useEffect(() => {
@@ -42,13 +78,26 @@ function App() {
     
     const loadData = async () => {
       setIsLoading(true);
-      console.log('Loading data for POI ID:', poiId);
+      console.log('Loading data for POI ID/Short Code:', poiId);
       
       try {
         let data;
+        let actualPoiId = poiId;
+        
         if (poiId && poiId.trim() !== '') {
-          console.log('Fetching POI data for:', poiId.trim());
-          data = await loadPoiData(poiId.trim());
+          // Check if it's a short code (try to look it up)
+          const resolvedPoiId = await getPoiIdFromShortCode(poiId.trim());
+          
+          if (resolvedPoiId) {
+            console.log(`Short code "${poiId}" resolved to POI ID: ${resolvedPoiId}`);
+            actualPoiId = resolvedPoiId;
+          } else {
+            // Not a short code, use as-is (might be a full POI ID)
+            actualPoiId = poiId.trim();
+          }
+          
+          console.log('Fetching POI data for:', actualPoiId);
+          data = await loadPoiData(actualPoiId);
           console.log('Successfully loaded data for:', data.college_name);
         } else {
           console.log('No POI ID provided, using default data');
@@ -241,14 +290,16 @@ function App() {
         e.preventDefault();
       }
     }}>
-      {CurrentScreen && (
-        <CurrentScreen 
-          key={`screen-${currentScreen}-${poiId || 'default'}`}
-          data={screenData}
-          campusData={campusData}
-          onReplay={handleReplay}
-        />
-      )}
+      <div className={styles.stage} ref={stageRef}>
+        {CurrentScreen && (
+          <CurrentScreen 
+            key={`screen-${currentScreen}-${poiId || 'default'}`}
+            data={screenData}
+            campusData={campusData}
+            onReplay={handleReplay}
+          />
+        )}
+      </div>
       <MusicPlayer 
         currentScreen={currentScreen}
         isPlaying={isMusicPlaying}

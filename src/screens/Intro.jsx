@@ -164,12 +164,13 @@ function Intro({ campusData }) {
       {/* Hero Text Structure - Center Aligned */}
       <div className={styles.heroContent}>
         {/* Swiggy Logo - Top Center */}
-        <img 
-          ref={logoRef}
-          src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
-          alt="Swiggy" 
-          className={styles.logo}
-        />
+        <div ref={logoRef} className={styles.logoWrapper}>
+          <img 
+            src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
+            alt="Swiggy" 
+            className={styles.logo}
+          />
+        </div>
         
         <div ref={presentsRef} className={styles.presents}>
           presents

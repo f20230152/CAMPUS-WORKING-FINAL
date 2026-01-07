@@ -1078,12 +1078,13 @@ function StatScreen({ data }) {
       )}
 
       {/* Swiggy Logo - Bottom Center - Same as intro screen */}
-      <img 
-        ref={logoRef}
-        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
-        alt="Swiggy" 
-        className={styles.logo}
-      />
+      <div ref={logoRef} className={styles.logoWrapper}>
+        <img 
+          src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
+          alt="Swiggy" 
+          className={styles.logo}
+        />
+      </div>
     </div>
   );
 }

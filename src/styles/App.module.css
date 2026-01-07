@@ -1,12 +1,30 @@
 .app {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
+  width: 100%;
+  height: 100%;
+  position: relative;
   overflow: hidden;
   background: #000;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Stage container with fixed aspect ratio - scales like Spotify Wrapped */
+.stage {
+  width: 390px;
+  height: 844px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center center;
+  background: transparent;
+  overflow: hidden;
+  will-change: transform;
+  /* Initial transform will be overridden by JS, but this centers it */
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
 }
 
 .skipButton {

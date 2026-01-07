@@ -1,9 +1,6 @@
 .intro {
-  width: 100vw;
-  height: 100vh;
-  height: -webkit-fill-available;
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -11,6 +8,8 @@
   background: linear-gradient(135deg, #FEF0E3 0%, #FFE5D4 50%, #FFD4C4 100%);
   position: relative;
   overflow: hidden;
+  aspect-ratio: 390 / 844;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* Background pattern */
@@ -39,32 +38,32 @@
   text-align: center;
   z-index: 2;
   position: relative;
-  margin-top: -5vh; /* Move content up slightly */
+  margin-top: -3%; /* Move content up slightly */
 }
 
 /* "presents" - Below logo, smaller */
 .presents {
-  font-size: clamp(14px, 3vw, 18px);
+  font-size: clamp(14px, 2.5%, 18px);
   font-weight: 500;
   opacity: 0;
   color: #fe5200;
   letter-spacing: 1px;
-  margin-bottom: 32px;
+  margin-bottom: 4%;
   text-transform: lowercase;
-  transform: translateY(-10px);
+  transform: translateY(-2%);
 }
 
 /* Main Title - Primary headline, bold - Increased size */
 .title {
-  font-size: clamp(40px, 10vw, 80px);
+  font-size: clamp(40px, 10%, 80px);
   font-weight: 900;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 2.5%;
   text-shadow: 0 4px 20px rgba(254, 82, 0, 0.2);
   line-height: 1.2;
   color: #fe5200;
   opacity: 0;
-  transform: translateY(20px) scale(0.95);
+  transform: translateY(2.5%) scale(0.95);
 }
 
 .wrappedYear {
@@ -77,14 +76,14 @@
 
 /* CTA Text - Button style */
 .cta {
-  font-size: clamp(16px, 3.5vw, 20px);
+  font-size: clamp(16px, 3%, 20px);
   font-weight: 500;
   opacity: 0;
   color: #fe5200; /* Swiggy orange */
   letter-spacing: 0.5px;
-  margin-top: 40px;
-  transform: translateY(10px);
-  padding: 14px 32px;
+  margin-top: 5%;
+  transform: translateY(1.5%);
+  padding: 1.5% 4%;
   background: rgba(255, 255, 255, 0.4); /* Light background for contrast */
   border-radius: 12px;
   backdrop-filter: blur(4px);
@@ -92,15 +91,29 @@
   text-transform: lowercase;
 }
 
+/* Logo wrapper with size locking */
+.logoWrapper {
+  width: clamp(64px, 12%, 140px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 4% auto;
+  opacity: 0;
+  z-index: 2;
+  transform: translateY(-2%);
+}
+
+.logoWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Swiggy Logo - Top Center in hero content */
 .logo {
-  width: clamp(140px, 22vw, 200px);
-  height: auto;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   z-index: 2;
   object-fit: contain;
-  margin: 0 auto 16px auto; /* Centered with bottom margin */
-  transform: translateY(-10px);
 }
 
 /* Food Vector/Emoji Illustrations - Fixed Zones with rounded corners */
@@ -114,10 +127,10 @@
 
 .vectorTopLeft {
   position: absolute;
-  top: -20px;
-  left: -30px;
-  width: clamp(80px, 20vw, 120px);
-  height: clamp(80px, 20vw, 120px);
+  top: -2%;
+  left: -8%;
+  width: clamp(80px, 20%, 120px);
+  height: clamp(80px, 20%, 120px);
   opacity: 0.4;
   pointer-events: none;
   z-index: 1;
@@ -126,10 +139,10 @@
 
 .vectorTopRight {
   position: absolute;
-  top: -15px;
-  right: -25px;
-  width: clamp(80px, 20vw, 120px);
-  height: clamp(80px, 20vw, 120px);
+  top: -2%;
+  right: -6%;
+  width: clamp(80px, 20%, 120px);
+  height: clamp(80px, 20%, 120px);
   opacity: 0.4;
   pointer-events: none;
   z-index: 1;
@@ -138,10 +151,10 @@
 
 .vectorBottomLeft {
   position: absolute;
-  bottom: 20px;
-  left: -20px;
-  width: clamp(80px, 20vw, 120px);
-  height: clamp(80px, 20vw, 120px);
+  bottom: 2%;
+  left: -5%;
+  width: clamp(80px, 20%, 120px);
+  height: clamp(80px, 20%, 120px);
   opacity: 0.35;
   pointer-events: none;
   z-index: 1;
@@ -150,10 +163,10 @@
 
 .vectorBottomRight {
   position: absolute;
-  bottom: 30px;
-  right: -25px;
-  width: clamp(80px, 20vw, 120px);
-  height: clamp(80px, 20vw, 120px);
+  bottom: 4%;
+  right: -6%;
+  width: clamp(80px, 20%, 120px);
+  height: clamp(80px, 20%, 120px);
   opacity: 0.35;
   pointer-events: none;
   z-index: 1;
@@ -165,8 +178,8 @@
   top: 50%;
   right: 5%;
   transform: translateY(-50%);
-  width: clamp(60px, 15vw, 90px);
-  height: clamp(60px, 15vw, 90px);
+  width: clamp(60px, 15%, 90px);
+  height: clamp(60px, 15%, 90px);
   opacity: 0.2;
   pointer-events: none;
   z-index: 1;
@@ -176,46 +189,46 @@
 /* Mobile portrait optimizations */
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .intro {
-    padding: 20px 16px;
+    padding: 2.5% 4%;
   }
   
   .heroContent {
-    margin-top: -8vh; /* Less negative margin on mobile */
+    margin-top: -4%; /* Less negative margin on mobile */
   }
   
   .presents {
-    font-size: clamp(18px, 5vw, 22px);
-    margin-bottom: 20px;
+    font-size: clamp(18px, 2.5%, 22px);
+    margin-bottom: 2.5%;
   }
   
   .title {
-    padding: 0 16px;
-    font-size: clamp(36px, 9vw, 48px);
+    padding: 0 4%;
+    font-size: clamp(36px, 9%, 48px);
   }
   
   .wrappedYear {
-    font-size: clamp(24px, 6vw, 32px);
+    font-size: clamp(24px, 6%, 32px);
   }
   
   .cta {
-    font-size: clamp(14px, 4vw, 18px);
-    padding: 10px 20px;
-    margin-top: 28px;
+    font-size: clamp(14px, 3.5%, 18px);
+    padding: 1.2% 2.5%;
+    margin-top: 3.5%;
   }
   
-  .logo {
-    width: clamp(120px, 20vw, 160px);
-    margin-bottom: 12px;
+  .logoWrapper {
+    width: clamp(64px, 15%, 120px);
+    margin-bottom: 1.5%;
   }
   
   .vectorTopLeft,
   .vectorTopRight,
   .vectorBottomLeft,
   .vectorBottomRight {
-    width: 60px;
+    width: clamp(60px, 15%, 80px);
   }
   
   .vectorCenterEdge {
-    width: 50px;
+    width: clamp(50px, 12%, 70px);
   }
 }

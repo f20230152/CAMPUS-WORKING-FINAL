@@ -33,11 +33,13 @@ function Outro({ campusData, onReplay }) {
   return (
     <div className={styles.outro}>
       {/* Swiggy Logo - Top Center - Same as intro screen */}
-      <img 
-        src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
-        alt="Swiggy" 
-        className={styles.logo}
-      />
+      <div className={styles.logoWrapper}>
+        <img 
+          src={`${import.meta.env.BASE_URL}assets/logos/swiggy-logo.png`}
+          alt="Swiggy" 
+          className={styles.logo}
+        />
+      </div>
 
       <div className={styles.card}>
         {/* Header */}
