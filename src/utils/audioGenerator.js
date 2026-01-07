@@ -167,6 +167,18 @@ class AudioGenerator {
     // Try to connect to Web Audio API if not already connected
     this.connectToWebAudio();
     
+    // Ensure audio is ready before playing
+    if (this.backgroundMusic.readyState < 2) {
+      this.backgroundMusic.addEventListener('canplaythrough', () => {
+        this.attemptPlayWithWebAudio();
+      }, { once: true });
+      this.backgroundMusic.load();
+    } else {
+      this.attemptPlayWithWebAudio();
+    }
+  }
+  
+  attemptPlayWithWebAudio() {
     // Play the music
     this.isPlaying = true;
     const playPromise = this.backgroundMusic.play();
@@ -176,12 +188,39 @@ class AudioGenerator {
       }).catch(error => {
         console.error('Error playing background music:', error);
         this.isPlaying = false;
+        // Fallback to direct playback if Web Audio fails
+        if (error.name !== 'NotAllowedError') {
+          this.playDirectly();
+        }
       });
+    } else {
+      // For older browsers
+      this.backgroundMusic.play();
+      this.isPlaying = true;
     }
   }
 
   playDirectly() {
     // Play directly without Web Audio API (fallback)
+    // CRITICAL: Ensure audio is loaded before playing
+    if (!this.backgroundMusic) {
+      console.warn('Background music not available');
+      return;
+    }
+    
+    // Wait for audio to be ready
+    if (this.backgroundMusic.readyState < 2) {
+      this.backgroundMusic.addEventListener('canplaythrough', () => {
+        this.attemptPlay();
+      }, { once: true });
+      // Also try loading
+      this.backgroundMusic.load();
+    } else {
+      this.attemptPlay();
+    }
+  }
+  
+  attemptPlay() {
     this.isPlaying = true;
     const playPromise = this.backgroundMusic.play();
     if (playPromise !== undefined) {
@@ -190,7 +229,19 @@ class AudioGenerator {
       }).catch(error => {
         console.error('Error playing background music:', error);
         this.isPlaying = false;
+        // If play failed, try again after a short delay
+        if (error.name !== 'NotAllowedError') {
+          setTimeout(() => {
+            if (!this.isPlaying) {
+              this.attemptPlay();
+            }
+          }, 500);
+        }
       });
+    } else {
+      // For older browsers
+      this.backgroundMusic.play();
+      this.isPlaying = true;
     }
   }
 

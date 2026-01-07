@@ -94,15 +94,18 @@
   text-transform: lowercase;
 }
 
-/* Logo wrapper with size locking */
+/* Logo wrapper with size locking - bigger and centered */
 .logoWrapper {
-  width: clamp(64px, 12%, 140px);
+  width: clamp(100px, 18%, 180px);
   aspect-ratio: 1 / 1;
   margin: 0 auto 4% auto;
   /* Initial opacity set by GSAP, but ensure visibility */
   z-index: 10;
   position: relative;
   transform: translateY(-2%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logoWrapper img {
@@ -135,12 +138,12 @@
 
 .vectorTopLeft {
   position: absolute;
-  top: -2%;
-  left: -8%;
-  width: clamp(80px, 20%, 120px);
-  height: clamp(80px, 20%, 120px);
+  top: 2%;
+  left: 2%;
+  width: clamp(60px, 15%, 100px);
+  height: clamp(60px, 15%, 100px);
   /* Initial opacity - will be animated by GSAP */
-  opacity: 0.5;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 1;
   border-radius: 25%; /* Rounded corners */
@@ -148,12 +151,12 @@
 
 .vectorTopRight {
   position: absolute;
-  top: -2%;
-  right: -6%;
-  width: clamp(80px, 20%, 120px);
-  height: clamp(80px, 20%, 120px);
+  top: 2%;
+  right: 2%;
+  width: clamp(60px, 15%, 100px);
+  height: clamp(60px, 15%, 100px);
   /* Initial opacity - will be animated by GSAP */
-  opacity: 0.5;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 1;
   border-radius: 25%; /* Rounded corners */
@@ -162,11 +165,11 @@
 .vectorBottomLeft {
   position: absolute;
   bottom: 2%;
-  left: -5%;
-  width: clamp(80px, 20%, 120px);
-  height: clamp(80px, 20%, 120px);
+  left: 2%;
+  width: clamp(60px, 15%, 100px);
+  height: clamp(60px, 15%, 100px);
   /* Initial opacity - will be animated by GSAP */
-  opacity: 0.45;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 1;
   border-radius: 25%; /* Rounded corners */
@@ -174,12 +177,12 @@
 
 .vectorBottomRight {
   position: absolute;
-  bottom: 4%;
-  right: -6%;
-  width: clamp(80px, 20%, 120px);
-  height: clamp(80px, 20%, 120px);
+  bottom: 2%;
+  right: 2%;
+  width: clamp(60px, 15%, 100px);
+  height: clamp(60px, 15%, 100px);
   /* Initial opacity - will be animated by GSAP */
-  opacity: 0.45;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 1;
   border-radius: 25%; /* Rounded corners */

@@ -26,27 +26,34 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
     const handleFirstInteraction = (e) => {
       if (!hasUserInteracted && audioGeneratorRef.current) {
         setHasUserInteracted(true);
+        // Mark user interaction immediately
+        audioGeneratorRef.current.userInteracted = true;
+        
         // CRITICAL: Resume AudioContext on first user gesture (iOS requirement)
         // This must happen synchronously with the user event
         audioGeneratorRef.current.resume().then(() => {
           console.log('Audio context unlocked after user interaction');
-          // Start music if it should be playing
-          if (isPlaying && audioGeneratorRef.current) {
-            audioGeneratorRef.current.startMusic();
-          }
+          // Start music if it should be playing - with small delay to ensure context is ready
+          setTimeout(() => {
+            if (isPlaying && audioGeneratorRef.current) {
+              audioGeneratorRef.current.startMusic();
+            }
+          }, 100);
         }).catch(err => {
           console.error('Failed to resume audio context:', err);
           // Try starting music anyway (might work without Web Audio API)
-          if (isPlaying && audioGeneratorRef.current) {
-            try {
-              audioGeneratorRef.current.startMusic();
-            } catch (playErr) {
-              console.warn('Audio playback may be blocked by browser policy');
-              setAudioBlocked(true);
-              // Hide the warning after 5 seconds
-              setTimeout(() => setAudioBlocked(false), 5000);
+          setTimeout(() => {
+            if (isPlaying && audioGeneratorRef.current) {
+              try {
+                audioGeneratorRef.current.startMusic();
+              } catch (playErr) {
+                console.warn('Audio playback may be blocked by browser policy');
+                setAudioBlocked(true);
+                // Hide the warning after 5 seconds
+                setTimeout(() => setAudioBlocked(false), 5000);
+              }
             }
-          }
+          }, 100);
         });
       }
     };

@@ -230,19 +230,28 @@ function App() {
     if (screen.type === 'intro') {
       // CRITICAL: Resume AudioContext on first user interaction (iOS requirement)
       const audioGenerator = getAudioGenerator();
+      
+      // Mark user interaction immediately
+      audioGenerator.userInteracted = true;
+      
+      // Resume audio context and start music
       audioGenerator.resume().then(() => {
         // Audio context is now running, safe to start music
-        audioGenerator.startMusic();
-        setIsMusicPlaying(true);
-      }).catch(err => {
-        console.error('Error starting audio:', err);
-        // Fallback: try direct playback (may work without Web Audio API)
-        try {
+        setTimeout(() => {
           audioGenerator.startMusic();
           setIsMusicPlaying(true);
-        } catch (fallbackErr) {
-          console.warn('Audio playback blocked - user may need to interact again');
-        }
+        }, 100); // Small delay to ensure context is fully ready
+      }).catch(err => {
+        console.error('Error resuming audio context:', err);
+        // Still try to start music directly (may work without Web Audio API)
+        setTimeout(() => {
+          try {
+            audioGenerator.startMusic();
+            setIsMusicPlaying(true);
+          } catch (fallbackErr) {
+            console.warn('Audio playback blocked - user may need to interact again');
+          }
+        }, 100);
       });
       
       // Always go forward from intro
