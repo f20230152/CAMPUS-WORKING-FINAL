@@ -5,13 +5,10 @@ let poiCache = null;
 
 export async function loadPoiData(poiId) {
   try {
-    console.log('loadPoiData called with POI ID:', poiId);
-    
     // Load all POI data once and cache it
     if (!poiCache) {
       const baseUrl = import.meta.env.BASE_URL || '/';
       const jsonUrl = `${baseUrl}data/pois.json`;
-      console.log('Fetching POI data from:', jsonUrl);
       
       const response = await fetch(jsonUrl);
       if (!response.ok) {
@@ -19,13 +16,10 @@ export async function loadPoiData(poiId) {
         throw new Error(`Failed to load POI data: ${response.status}`);
       }
       poiCache = await response.json();
-      console.log('POI cache loaded, total POIs:', Object.keys(poiCache).length);
     }
 
     // Get specific POI data - try exact match first
     let poiData = poiCache[poiId];
-    console.log('Looking for POI:', poiId);
-    console.log('POI found (exact match):', !!poiData);
     
     // If not found, try case-insensitive search
     if (!poiData) {
@@ -33,19 +27,15 @@ export async function loadPoiData(poiId) {
       const matchingKey = Object.keys(poiCache).find(key => key.toLowerCase() === lowerPoiId);
       if (matchingKey) {
         poiData = poiCache[matchingKey];
-        console.log('POI found (case-insensitive):', matchingKey);
       }
     }
     
     if (!poiData) {
-      console.warn(`POI ${poiId} not found in cache.`);
-      console.warn('Available POI IDs (first 10):', Object.keys(poiCache).slice(0, 10));
-      console.warn('Total POIs in cache:', Object.keys(poiCache).length);
+      console.warn(`POI ${poiId} not found in cache, using default data`);
       // Return default data if POI not found
       return await getDefaultData();
     }
 
-    console.log('Returning POI data for:', poiData.college_name);
     return poiData;
   } catch (error) {
     console.error('Error loading POI data:', error);

@@ -36,7 +36,6 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
         
         if (isIOS) {
           // iOS: Play immediately, synchronously with user event
-          console.log('iOS detected - playing audio directly');
           audioGeneratorRef.current.resume().then(() => {
             if (isPlaying && audioGeneratorRef.current) {
               audioGeneratorRef.current.startMusic();
@@ -57,7 +56,6 @@ function MusicPlayer({ currentScreen, isPlaying, onPlayStateChange }) {
         } else {
           // Non-iOS: Resume AudioContext on first user gesture
           audioGeneratorRef.current.resume().then(() => {
-            console.log('Audio context unlocked after user interaction');
             setTimeout(() => {
               if (isPlaying && audioGeneratorRef.current) {
                 audioGeneratorRef.current.startMusic();

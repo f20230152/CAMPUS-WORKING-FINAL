@@ -63,14 +63,7 @@ function App() {
     };
   }, []);
 
-  // Debug: Log POI ID on mount and changes
-  useEffect(() => {
-    console.log('=== App Component ===');
-    console.log('POI ID from useParams:', paramPoiId);
-    console.log('POI ID:', poiId);
-    console.log('Full URL:', window.location.href);
-    console.log('Hash:', window.location.hash);
-  }, [poiId, paramPoiId]);
+  // POI ID tracking (removed debug logs for production)
 
   // Load POI data when component mounts or POI ID changes
   useEffect(() => {
@@ -78,7 +71,6 @@ function App() {
     
     const loadData = async () => {
       setIsLoading(true);
-      console.log('Loading data for POI ID/Short Code:', poiId);
       
       try {
         let data;
@@ -89,18 +81,14 @@ function App() {
           const resolvedPoiId = await getPoiIdFromShortCode(poiId.trim());
           
           if (resolvedPoiId) {
-            console.log(`Short code "${poiId}" resolved to POI ID: ${resolvedPoiId}`);
             actualPoiId = resolvedPoiId;
           } else {
             // Not a short code, use as-is (might be a full POI ID)
             actualPoiId = poiId.trim();
           }
           
-          console.log('Fetching POI data for:', actualPoiId);
           data = await loadPoiData(actualPoiId);
-          console.log('Successfully loaded data for:', data.college_name);
         } else {
-          console.log('No POI ID provided, using default data');
           data = defaultCampusData;
         }
         
