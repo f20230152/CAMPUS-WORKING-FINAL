@@ -319,6 +319,13 @@ function App() {
     );
   }
 
+  // Handle back button click - redirect to Swiggy deep link
+  const handleBackClick = (e) => {
+    e.stopPropagation(); // Prevent triggering screen navigation
+    e.preventDefault(); // Prevent default behavior
+    window.location.href = 'swiggy://restaurantList';
+  };
+
   return (
     <div className={styles.app} onClick={handleScreenTouch} onTouchEnd={handleScreenTouch} onTouchStart={(e) => {
       // Only preventDefault if not passive
@@ -326,6 +333,56 @@ function App() {
         e.preventDefault();
       }
     }}>
+      {/* Back button */}
+      <button 
+        className={styles.backButton}
+        onClick={handleBackClick}
+        onTouchEnd={handleBackClick}
+        aria-label="Back to Swiggy"
+      >
+        <svg 
+          className={styles.backButtonIcon}
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+
+      {/* Left arrow indicator */}
+      <div className={`${styles.arrowIndicator} ${styles.arrowIndicatorLeft}`}>
+        <svg 
+          className={styles.arrowIcon}
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </div>
+
+      {/* Right arrow indicator */}
+      <div className={`${styles.arrowIndicator} ${styles.arrowIndicatorRight}`}>
+        <svg 
+          className={styles.arrowIcon}
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2.5" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </div>
+
       <div className={styles.stage} ref={stageRef}>
         {CurrentScreen && (
           <CurrentScreen 

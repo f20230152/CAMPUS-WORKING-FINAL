@@ -66,6 +66,72 @@
   border-color: rgba(254, 82, 0, 0.6);
 }
 
+/* Back button - top-left corner */
+.backButton {
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+  z-index: 10000;
+  width: clamp(36px, 9.2%, 44px);
+  height: clamp(36px, 9.2%, 44px);
+  min-width: 36px;
+  min-height: 36px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  pointer-events: auto;
+}
+
+.backButton:hover,
+.backButton:active {
+  background: rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.backButtonIcon {
+  width: clamp(16px, 4.1%, 20px);
+  height: clamp(16px, 4.1%, 20px);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Left/Right arrow indicators - Instagram Stories style */
+.arrowIndicator {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.arrowIndicatorLeft {
+  left: max(8px, env(safe-area-inset-left));
+}
+
+.arrowIndicatorRight {
+  right: max(8px, env(safe-area-inset-right));
+}
+
+.arrowIcon {
+  width: clamp(20px, 5.1%, 28px);
+  height: clamp(20px, 5.1%, 28px);
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
 /* Mobile portrait optimizations */
 @media screen and (max-width: 480px) and (orientation: portrait) {
   .skipButton {
@@ -77,6 +143,23 @@
     font-size: 13px;
     min-width: 48px;
     min-height: 48px;
+  }
+
+  .backButton {
+    top: max(12px, env(safe-area-inset-top));
+    left: max(12px, env(safe-area-inset-left));
+    width: clamp(40px, 10.3%, 48px);
+    height: clamp(40px, 10.3%, 48px);
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .arrowIndicatorLeft {
+    left: max(6px, env(safe-area-inset-left));
+  }
+
+  .arrowIndicatorRight {
+    right: max(6px, env(safe-area-inset-right));
   }
 }
 
