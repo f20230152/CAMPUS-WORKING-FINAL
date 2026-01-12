@@ -313,15 +313,11 @@ if (isUUID) {
   // Handle back button click - redirect to Swiggy deep link
   const handleBackClick = (e) => {
     e.stopPropagation();
-    e.preventDefault();
   
-    // Proper way to exit Swiggy webview
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.close();
-    }
+    // Single, safe navigation for Swiggy WebView
+    window.history.go(-1);
   };
+  
   
 
   return (
@@ -333,11 +329,11 @@ if (isUUID) {
     }}>
       {/* Back button */}
       <button 
-        className={styles.backButton}
-        onClick={handleBackClick}
-        onTouchEnd={handleBackClick}
-        aria-label="Back to Swiggy"
+  className={styles.backButton}
+  onClick={handleBackClick}
+  aria-label="Back to Swiggy"
       >
+
         <svg 
           className={styles.backButtonIcon}
           viewBox="0 0 24 24" 
