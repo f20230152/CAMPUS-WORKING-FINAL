@@ -313,20 +313,19 @@ if (isUUID) {
   // Handle back button click - redirect to Swiggy deep link
   const handleBackClick = (e) => {
     e.stopPropagation();
-  
-    // Single, safe navigation for Swiggy WebView
+    e.nativeEvent.stopImmediatePropagation();
     window.history.go(-1);
   };
   
   
+  
 
   return (
-    <div className={styles.app} onClick={handleScreenTouch} onTouchEnd={handleScreenTouch} onTouchStart={(e) => {
-      // Only preventDefault if not passive
-      if (e.cancelable) {
-        e.preventDefault();
-      }
-    }}>
+    <div
+  className={styles.app}
+  onClick={handleScreenTouch}
+>
+
       {/* Back button */}
       <button 
   className={styles.backButton}
