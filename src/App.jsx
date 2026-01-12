@@ -315,16 +315,10 @@ if (isUUID) {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
   
-    // Case 1: Normal webview history exists
-    if (window.history.length > 1) {
-      window.history.go(-1);
-      return;
-    }
-  
-    // Case 2: Swiggy opened this as first webview
-    // Force WebView to hand control back to app
-    window.location.href = document.referrer || 'about:blank';
+    // Swiggy-approved exit
+    window.location.href = 'swiggy://restaurantList';
   };
+  
   
   
   
