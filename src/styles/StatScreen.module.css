@@ -206,6 +206,13 @@
   letter-spacing: -2px;
   color: #fe5200;
 }
+.statScreen[data-stat-type="restaurant"] .value {
+  font-size: clamp(40px, 9vw, 64px);
+  line-height: 1.15;
+  letter-spacing: -0.5px;
+  max-width: 90%;
+  word-break: break-word;
+}
 
 /* 12am_craving value spacing */
 .statScreen[data-stat-type="12am_craving"] .value {
