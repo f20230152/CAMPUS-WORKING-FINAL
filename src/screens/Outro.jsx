@@ -1,63 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../styles/Outro.module.css';
-import { getShareUrl } from '../utils/loadMaskedLink';
 
 function Outro({ campusData, onReplay }) {
-  const [isSharing, setIsSharing] = useState(false);
-
-  const handleShare = async () => {
-    setIsSharing(true);
-    
-    try {
-      // Get masked link for this POI (hides original GitHub URL)
-      const poiId = campusData.poi_id || null;
-      const shareUrl = await getShareUrl(poiId);
-      
-      // Use native share API if available (Android & iOS)
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: `${campusData.college_name} Campus Wrapped`,
-            text: `Check out ${campusData.college_name}'s Campus Wrapped!`,
-            url: shareUrl
-          });
-        } catch (err) {
-          // User cancelled or share failed - fallback to clipboard
-          if (err.name !== 'AbortError') {
-            copyToClipboard(shareUrl);
-          }
-        }
-      } else {
-        // Fallback for browsers without native share
-        copyToClipboard(shareUrl);
-      }
-    } catch (error) {
-      console.error('Error sharing:', error);
-      // Fallback to current URL if masked link fails
-      const fallbackUrl = window.location.href;
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: `${campusData.college_name} Campus Wrapped`,
-            text: `Check out ${campusData.college_name}'s Campus Wrapped!`,
-            url: fallbackUrl
-          });
-        } catch (err) {
-          copyToClipboard(fallbackUrl);
-        }
-      } else {
-        copyToClipboard(fallbackUrl);
-      }
-    } finally {
-      setIsSharing(false);
-    }
-  };
-
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      // Show feedback if needed
-    });
-  };
 
   const formatCurrency = (value) => {
     return `₹${value.toLocaleString('en-IN')}`;
@@ -137,15 +81,6 @@ function Outro({ campusData, onReplay }) {
           Swiggy • Campus Wrapped 2025
         </div>
       </div>
-
-      {/* Share CTA Button - Outside Card */}
-      <button 
-        className={styles.shareButton}
-        onClick={handleShare}
-      >
-        Share
-        <span className={styles.shareIcon}>↗</span>
-      </button>
     </div>
   );
 }
