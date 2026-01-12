@@ -4,18 +4,32 @@ import { HashRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import './styles/global.css';
 
-// Use HashRouter for GitHub Pages to avoid 404 issues
-// URLs will be: /CAMPUS-WORKING-FINAL/#/poi_id or /CAMPUS-WORKING-FINAL/#/
+/**
+ * Swiggy WebView Fix
+ * - Swiggy strips #/poiId
+ * - It keeps ?campus=poiId
+ * - We convert query → hash BEFORE React Router loads
+ */
+(function syncQueryToHash() {
+  const params = new URLSearchParams(window.location.search);
+  const campusId = params.get('campus');
+
+  if (campusId && (!window.location.hash || window.location.hash === '#/')) {
+    window.location.replace(
+      window.location.pathname + '#/' + campusId
+    );
+  }
+})();
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <HashRouter>
       <Routes>
-        {/* POI-specific path - must come first to match before root */}
+        {/* POI-specific route */}
         <Route path="/:poiId" element={<App />} />
-        {/* Root path - uses default data */}
+        {/* Default / sample */}
         <Route path="/" element={<App />} />
       </Routes>
     </HashRouter>
   </React.StrictMode>
 );
-
