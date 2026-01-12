@@ -77,15 +77,18 @@ function App() {
         let actualPoiId = poiId;
         
         if (poiId && poiId.trim() !== '') {
-          // Check if it's a short code (try to look it up)
-          const resolvedPoiId = await getPoiIdFromShortCode(poiId.trim());
-          
-          if (resolvedPoiId) {
-            actualPoiId = resolvedPoiId;
-          } else {
-            // Not a short code, use as-is (might be a full POI ID)
-            actualPoiId = poiId.trim();
-          }
+          const trimmedPoiId = poiId.trim();
+
+// UUIDs should bypass short-code resolution
+const isUUID = trimmedPoiId.length > 20 && trimmedPoiId.includes('-');
+
+if (isUUID) {
+  actualPoiId = trimmedPoiId;
+} else {
+  const resolvedPoiId = await getPoiIdFromShortCode(trimmedPoiId);
+  actualPoiId = resolvedPoiId || trimmedPoiId;
+}
+
           
           data = await loadPoiData(actualPoiId);
         } else {
