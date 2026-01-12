@@ -312,10 +312,17 @@ if (isUUID) {
 
   // Handle back button click - redirect to Swiggy deep link
   const handleBackClick = (e) => {
-    e.stopPropagation(); // Prevent triggering screen navigation
-    e.preventDefault(); // Prevent default behavior
-    window.location.href = 'swiggy://restaurantList';
+    e.stopPropagation();
+    e.preventDefault();
+  
+    // Proper way to exit Swiggy webview
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.close();
+    }
   };
+  
 
   return (
     <div className={styles.app} onClick={handleScreenTouch} onTouchEnd={handleScreenTouch} onTouchStart={(e) => {
